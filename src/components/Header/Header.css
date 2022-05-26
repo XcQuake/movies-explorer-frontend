@@ -13,3 +13,9 @@
   justify-content: space-between;
   align-items: center;
 }
+
+@media (min-width: 768px) {
+  .header__wrapper {
+    padding: 18px 30px;
+  }
+}
