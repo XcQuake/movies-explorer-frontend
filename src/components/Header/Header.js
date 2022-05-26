@@ -1,14 +1,12 @@
 import './Header.css';
 import Logo from '../Logo/Logo'
+import AuthBar from '../AuthBar/AuthBar';
 
 function Header() {
   return (
     <header className='header'>
       <Logo />
-      <div className='header__authorization'>
-        <button className='header__button header__button_signup'>Регистрация</button>
-        <button className='header__button header__button_signin'>Войти</button>
-      </div>
+      <AuthBar />
     </header>
   )
 }
