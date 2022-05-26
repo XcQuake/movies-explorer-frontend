@@ -5,10 +5,12 @@ import AuthBar from '../AuthBar/AuthBar';
 function Header() {
   return (
     <header className='header'>
-      <Logo />
-      <AuthBar />
+      <div className='header__wrapper'>
+        <Logo />
+        <AuthBar />
+      </div>
     </header>
-  )
+  );
 }
 
 export default Header;

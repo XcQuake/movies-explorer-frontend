@@ -1,5 +1,13 @@
 .header {
+  width: 100%;
   background-color: #073042;
+  display: flex;
+  justify-content: center;
+}
+
+.header__wrapper {
+  width: 100%;
+  max-width: 1140px;
   padding: 18px 14px;
   display: flex;
   justify-content: space-between;
