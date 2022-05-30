@@ -34,6 +34,9 @@
 }
 
 @media (min-width: 768px) {
+  .promo__wrapper {
+    padding: 0 44px;
+  }
   .promo__title {
     font-weight: 400;
     font-size: 40px;
@@ -47,8 +50,8 @@
 }
 
 @media (min-width: 1024px) {
-  .promo {
-    padding: 0 44px;
+  .promo__wrapper {
+    padding: 0 50px;
   }
 
   .promo__title {

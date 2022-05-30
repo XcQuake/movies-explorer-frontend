@@ -93,12 +93,8 @@
 }
 
 @media (min-width: 1024px) {
-  .about-project {
-    padding: 0 44px;
-  }
-
   .about-project__wrapper {
-    padding: 110px 0 101px;
+    padding: 110px 50px 101px;
   }
 
   .about-project__container {
