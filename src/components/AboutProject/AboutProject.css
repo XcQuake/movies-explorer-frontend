@@ -9,16 +9,6 @@
   padding: 70px 18px 59px;
 }
 
-.about-project__title {
-  margin: 0;
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 22px;
-  letter-spacing: -0.04em;
-  padding-bottom: 28px;
-  border-bottom: solid 1px #000;
-}
-
 .about-project__container {
   margin: 60px 0;
   display: flex;
@@ -88,12 +78,6 @@
   .about-project__container {
     margin: 70px 0 93px;
     gap: 30px
-  }
-
-  .about-project__title {
-    font-size: 22px;
-    line-height: 27px;
-    padding-bottom: 23px;
   }
 
   .about-project__paragraph-header {
