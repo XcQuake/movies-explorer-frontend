@@ -24,6 +24,11 @@
   gap: 20px;
 }
 
+.portfolio__list-element {
+  padding-bottom: 19px;
+  border-bottom: 1px solid #E6E6E6;
+}
+
 .portfolio__link {
   color: #000;
   text-decoration: none;
@@ -34,8 +39,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 19px;
-  border-bottom: 1px solid #E6E6E6;
   opacity: 1;
   transition: 0.2s ease-out;
   box-sizing: border-box;
