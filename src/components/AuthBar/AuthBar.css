@@ -12,7 +12,7 @@
   border-radius: 3px;
   cursor: pointer;
   opacity: 1;
-  transition: opacity 0.2s ease;
+  transition: 0.2s ease;
 }
 
 .authbar__button:hover {
@@ -24,9 +24,19 @@
   color: #000;
 }
 
+.authbar__button_signin:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px white;
+}
+
 .authbar__button_signup {
   background-color: #073042;
   color: #fff;
+}
+
+.authbar__button_signup:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px white;
 }
 
 @media (min-width: 768px) {
