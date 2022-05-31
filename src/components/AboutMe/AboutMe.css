@@ -127,6 +127,7 @@
 @media (min-width: 1024px) {
   .about-me__wrapper {
     padding: 110px 50px 101px;
+    gap: 66px;
   }
 
   .about-me__container {
