@@ -1,5 +1,60 @@
-.movies-cardlist__wrapper {
+.movies__wrapper {
   width: 100%;
   max-width: 1140px;
+  padding: 40px 10px 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 50px;
+}
+
+.movies__gallery {
+  margin: 0;
+  padding: 0;
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  column-gap: 15px;
+  row-gap: 39px;
+  overflow: hidden;
+}
+
+.movies__more-button {
+  background-color: #F9F9F9;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  padding: 11px 0;
+  border: none;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+.movies__more-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px #3456F3;
+}
+
+@media (min-width: 768px) {
+  .movies__wrapper {
+    padding: 70px 30px 80px;
+    row-gap: 62px;
+  }
+
+  .movies__gallery {
+    column-gap: 30px;
+    row-gap: 47px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .movies__wrapper {
+    padding: 60px 30px 80px;
+    row-gap: 78px;
+  }
+
+  .movies__gallery {
+    grid-template-columns: 1fr 1fr 1fr;
+    row-gap: 59px;
+  }
 }
