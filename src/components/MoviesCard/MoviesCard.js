@@ -1,6 +1,6 @@
 import './MoviesCard.css';
 import moviesImage from '../../images/movie_pic.png';
-import SaveButton from '../SaveButton/SaveButton';
+import SaveButton from '../Buttons/MovieButton/MovieButton';
 
 function MoviesCard() {
   const movie = {
