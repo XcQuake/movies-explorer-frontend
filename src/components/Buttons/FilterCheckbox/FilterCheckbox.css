@@ -19,6 +19,10 @@
   height: 0;
 }
 
+.filter-checkbox__input:focus-visible + .filter-checkox__slider {
+  box-shadow: 0 0 0 2px #3456F3;
+}
+
 .filter-checkox__slider {
   position: absolute;
   top: 0;
