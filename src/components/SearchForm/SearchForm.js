@@ -1,7 +1,7 @@
 import './SearchForm.css';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 
-function Navigation() {
+function SearchForm() {
   return (
     <section className='navigation'>
       <div className='navigation__wrapper'>
@@ -25,4 +25,4 @@ function Navigation() {
   )
 }
 
-export default Navigation;
+export default SearchForm;

@@ -4,7 +4,6 @@ import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import Footer from '../Footer/Footer';
-import SearchForm from '../SearchForm/SearchForm';
 
 export default function App() {
   return (
@@ -12,7 +11,6 @@ export default function App() {
       <Header />
       <Switch>
         <Route path='/movies'>
-          <SearchForm />
           <Movies />
         </Route>
         <Route exact path='/'>
