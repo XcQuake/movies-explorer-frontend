@@ -20,10 +20,19 @@
   overflow: hidden;
 }
 
+.save-button__text {
+  opacity: 1;
+  transition: 0.2s ease;
+}
+
 .save-button_active {
   width: 21px;
   background-image: url(../../images/saved-icon.svg);
   background-color: #FF3055;
+}
+
+.save-button_active .save-button__text {
+  opacity: 0;
 }
 
 .save-button:focus-visible {
@@ -31,3 +40,4 @@
   box-shadow: 0 0 0 3px #3456F3;
   font-weight: 600;
 }
+

@@ -8,18 +8,13 @@ function SaveButton() {
     setIsSaved(!isSaved);
   };
 
-  const buttonTextStyle = {
-    transition: 'opacity 0.3s ease',
-    opacity: isSaved ? '0' : '1',
-  }
-
   return (
     <button
       className={`${isSaved && 'save-button_active'} save-button`}
       type='button'
       onClick={saveHandler}
     >
-      <span className='save-button__text' style={buttonTextStyle}>Сохранить</span>
+      <span className='save-button__text'>Сохранить</span>
     </button>
   );
 }
