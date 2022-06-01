@@ -24,9 +24,19 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 16px;
-  color: #A0A0A0;
   border: none;
-  padding: 0;
+  margin-right: 10px;
+  transition: 0.3s ease;
+  border-radius: 4px;
+}
+
+.navigation__search-field::placeholder {
+  color: #A0A0A0;
+}
+
+.navigation__search-field:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #3456F3;
 }
 
 .navigation__search-button {
@@ -40,6 +50,12 @@
   background-color: #3456F3;
   border-radius: 5px;
   cursor: pointer;
+  transition: box-shadow 0.3s ease;
+}
+
+.navigation__search-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px #000;
 }
 
 @media (min-width: 768px) {
