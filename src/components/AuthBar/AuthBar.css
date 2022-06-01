@@ -24,9 +24,9 @@
   color: #000;
 }
 
-.authbar__button_signin:focus {
+.authbar__button_signin:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px white;
+  box-shadow: 0 0 0 2px white;
 }
 
 .authbar__button_signup {
@@ -34,9 +34,9 @@
   color: #fff;
 }
 
-.authbar__button_signup:focus {
+.authbar__button_signup:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px white;
+  box-shadow: 0 0 0 2px white;
 }
 
 @media (min-width: 768px) {
