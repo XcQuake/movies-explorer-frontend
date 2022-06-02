@@ -1,4 +1,4 @@
-
+import MoreButton from '../Buttons/MoreButton/MoreButton';
 import './MoviesCardList.css';
 
 function MoviesCardList({children}) {
@@ -8,7 +8,7 @@ function MoviesCardList({children}) {
         <ul className='movies-cardlist__gallery'>
           {children}
         </ul>
-        <button className='movies-cardlist__more-button'>Ещё</button>
+        <MoreButton />
       </div>
     </section>
   )

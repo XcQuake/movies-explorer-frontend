@@ -1,0 +1,16 @@
+.more-button {
+  background-color: #F9F9F9;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  padding: 11px 0;
+  border: none;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+.more-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px #3456F3;
+}
