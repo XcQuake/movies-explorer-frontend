@@ -6,6 +6,7 @@ import Movies from '../Movies/Movies';
 import Footer from '../Footer/Footer';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import SearchForm from '../SearchForm/SearchForm';
+import Profile from '../Profile/Profile';
 
 export default function App() {
   return (
@@ -15,16 +16,21 @@ export default function App() {
         <Route path='/movies'>
           <SearchForm />
           <Movies />
+          <Footer />
         </Route>
         <Route path='/saved-movies'>
           <SearchForm />
           <SavedMovies />
+          <Footer />
+        </Route>
+        <Route path='/profile'>
+          <Profile />
         </Route>
         <Route exact path='/'>
           <Main />
+          <Footer />
         </Route>
       </Switch>
-      <Footer />
     </>
   );
 }

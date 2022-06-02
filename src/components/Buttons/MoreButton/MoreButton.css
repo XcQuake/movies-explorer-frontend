@@ -8,10 +8,10 @@
   border: none;
   cursor: pointer;
   transition: box-shadow 0.2s ease;
-  margin: 50px 0 80px;
 }
 
 .more-button:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px #3456F3;
 }
+
