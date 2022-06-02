@@ -3,21 +3,19 @@ import FilterCheckbox from '../Buttons/FilterCheckbox/FilterCheckbox';
 
 function SearchForm() {
   return (
-    <section className='navigation'>
-      <div className='navigation__wrapper'>
-        <form className='navigation__form'>
-          <fieldset className='navigation__search-block'>
-            <input
-              className='navigation__search-field'
-              name='movie'
-              type='text'
-              id='movie'
-              placeholder='Фильм'
-              minLength='2'
-              maxLength='250'
-            />
-            <button type='submit' className='navigation__search-button'>Поиск</button>
-          </fieldset>
+    <section className='search-form'>
+      <div className='search-form__wrapper'>
+        <form className='search-form__form'>
+          <input
+            className='search-form__search-input'
+            name='movie'
+            type='text'
+            id='movie'
+            placeholder='Фильм'
+            minLength='2'
+            maxLength='250'
+          />
+          <button type='submit' className='search-form__search-button'>Поиск</button>
         </form>
         <FilterCheckbox />
       </div>

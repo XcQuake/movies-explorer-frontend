@@ -1,5 +1,5 @@
-import MoreButton from '../Buttons/MoreButton/MoreButton';
 import './MoviesCardList.css';
+import MoreButton from '../Buttons/MoreButton/MoreButton';
 
 function MoviesCardList({children}) {
   return (
