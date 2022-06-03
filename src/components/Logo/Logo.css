@@ -15,5 +15,5 @@
 
 .logo:focus-visible  {
   outline: none;
-  box-shadow: 0 0 0 2px #fff;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #3456F3;
 }
