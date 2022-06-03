@@ -7,24 +7,34 @@ import Footer from '../Footer/Footer';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import SearchForm from '../SearchForm/SearchForm';
 import Profile from '../Profile/Profile';
+import Login from '../Login/Login';
+import Register from '../Register/Register';
 
 export default function App() {
   return (
     <>
-      <Header />
       <Switch>
         <Route path='/movies'>
+          <Header />
           <SearchForm />
           <Movies />
           <Footer />
         </Route>
         <Route path='/saved-movies'>
+          <Header />
           <SearchForm />
           <SavedMovies />
           <Footer />
         </Route>
         <Route path='/profile'>
+          <Header />
           <Profile />
+        </Route>
+        <Route path='/signin'>
+          <Login />
+        </Route>
+        <Route path='/signup'>
+          <Register />
         </Route>
         <Route exact path='/'>
           <Main />
