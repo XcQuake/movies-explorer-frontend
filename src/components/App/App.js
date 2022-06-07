@@ -30,13 +30,10 @@ export default function App() {
           <Header />
           <Profile />
         </Route>
-        <Route path='/signin'>
-          <Login />
-        </Route>
-        <Route path='/signup'>
-          <Register />
-        </Route>
+        <Route path='/signin' component={Login} />
+        <Route path='/signup' component={Register} />
         <Route exact path='/'>
+          <Header />
           <Main />
           <Footer />
         </Route>
