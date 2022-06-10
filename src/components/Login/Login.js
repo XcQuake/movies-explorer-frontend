@@ -13,7 +13,7 @@ function Login() {
 
   const textConfig = {
     button: 'Войти',
-    already: 'Ещё не&nbsp;зарегистрированы?',
+    already: 'Ещё не зарегистрированы?',
     link: 'Регистрация',
   }
 

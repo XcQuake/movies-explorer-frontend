@@ -46,7 +46,7 @@ export default function App() {
           <Main />
         </Route>
       </Switch>
-      <Route path='/(|movies|saved-movies|profile)' component={Footer} />
+      <Route path='/(|movies|saved-movies)' component={Footer} />
       <Navigation isOpen={isNavigationOpen} />
     </>
   );
