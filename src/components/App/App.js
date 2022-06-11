@@ -11,6 +11,7 @@ import Login from '../Login/Login';
 import Register from '../Register/Register';
 import Navigation from '../Navigation/Navigation';
 import { useState } from 'react';
+import NotFound from '../NotFound/NotFound';
 
 export default function App() {
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
@@ -45,6 +46,7 @@ export default function App() {
           <Header />
           <Main />
         </Route>
+        <Route exact path='*' component={NotFound} />
       </Switch>
       <Route path='/(|movies|saved-movies)' component={Footer} />
       <Navigation isOpen={isNavigationOpen} />
