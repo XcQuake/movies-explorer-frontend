@@ -1,5 +1,6 @@
 import './App.css';
 import { Route, Switch } from 'react-router-dom';
+import { useState } from 'react';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
@@ -10,7 +11,6 @@ import Profile from '../Profile/Profile';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import Navigation from '../Navigation/Navigation';
-import { useState } from 'react';
 import NotFound from '../NotFound/NotFound';
 
 export default function App() {
@@ -22,15 +22,14 @@ export default function App() {
 
   return (
     <>
-      <Route path='/signin' component={Login} />
-      <Route path='/signup' component={Register} />
       <Route path='/(movies|saved-movies|profile)'>
-        <Header
-          onBurgerClick={handleBurgerClick}
-        />
-      </Route>
-      <Route path='(movies|saved-movies)' component={SearchForm} />
+          <Header
+            onBurgerClick={handleBurgerClick}
+          />
+        </Route>
       <Switch>
+        <Route path='/signin' component={Login} />
+        <Route path='/signup' component={Register} />
         <Route path='/movies'>
           <SearchForm />
           <Movies />
