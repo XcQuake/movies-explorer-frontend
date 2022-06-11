@@ -13,9 +13,9 @@ function Login() {
 
   const textConfig = {
     button: 'Войти',
-    already: 'Ещё не зарегистрированы?',
+    linkText: 'Ещё не зарегистрированы?',
     link: 'Регистрация',
-  }
+  };
 
   return (
     <main className='login'>

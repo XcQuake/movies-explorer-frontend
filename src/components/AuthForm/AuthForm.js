@@ -14,8 +14,8 @@ function AuthForm({ onSubmit, children, config }) {
         >
           {config.button}
         </button>
-        <p className='authform__already-text'>
-          {config.already}
+        <p className='authform__link-text'>
+          {config.linkText}
           <a className='authform__link' href='/signin'>{config.link}</a>
         </p>
       </div>

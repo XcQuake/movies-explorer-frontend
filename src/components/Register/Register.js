@@ -13,7 +13,7 @@ function Register() {
 
   const textConfig = {
     button: 'Зарегистрироваться',
-    already: 'Уже зарегистрированы?',
+    linkText: 'Уже зарегистрированы?',
     link: 'Войти',
   }
 
