@@ -96,11 +96,20 @@
   opacity: 0.7;
 }
 
+.profile__button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #3456F3;
+}
+
 .profile__button_save {
   background-color: #3456F3;
   border-radius: 3px;
   color: #fff;
   padding: 13px;
+}
+
+.profile__button_save:focus-visible {
+  box-shadow: 0 0 0 3px #000;
 }
 
 .profile__button_exit {
