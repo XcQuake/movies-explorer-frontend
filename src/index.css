@@ -1,0 +1,30 @@
+@import url(./vendor/normalize.css);
+@import url(./vendor/fonts.css);
+
+.root {
+  font-family: "Inter", sans-serif;
+  min-width: 320px;
+}
+
+.section {
+  display: flex;
+  justify-content: center;
+}
+
+.section-title {
+  margin: 0;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: -0.04em;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #000;
+}
+
+@media (min-width: 768px) {
+  .section-title {
+    font-size: 22px;
+    line-height: 27px;
+    padding-bottom: 23px;
+  }
+}
