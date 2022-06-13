@@ -22,7 +22,7 @@ export default function App() {
 
   return (
     <>
-      <Route path='/(movies|saved-movies|profile)'>
+      <Route path='/(|movies|saved-movies|profile)'>
           <Header
             onBurgerClick={handleBurgerClick}
           />
@@ -42,7 +42,6 @@ export default function App() {
           <Profile />
         </Route>
         <Route exact path='/'>
-          <Header />
           <Main />
         </Route>
         <Route exact path='*' component={NotFound} />
