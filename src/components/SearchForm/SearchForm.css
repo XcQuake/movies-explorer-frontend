@@ -50,7 +50,11 @@
   background-color: #3456F3;
   border-radius: 5px;
   cursor: pointer;
-  transition: box-shadow 0.3s ease;
+  transition: 0.2s ease;
+}
+
+.search-form__search-button:hover {
+  opacity: 0.8;
 }
 
 .search-form__search-button:focus-visible {

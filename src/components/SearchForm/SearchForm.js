@@ -14,6 +14,7 @@ function SearchForm() {
             placeholder='Фильм'
             minLength='2'
             maxLength='250'
+            required
           />
           <button type='submit' className='search-form__search-button'>Поиск</button>
         </form>
