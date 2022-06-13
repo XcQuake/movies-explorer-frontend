@@ -5,10 +5,12 @@ import MoviesCard from '../MoviesCard/MoviesCard';
 function SavedMovies() {
   return (
     <main className='saved-movies'>
-      <MoviesCardList>
-        <MoviesCard />
-        <MoviesCard />
-      </MoviesCardList>
+      <div className='saved-movies__wrapper'>
+        <MoviesCardList>
+          <MoviesCard />
+          <MoviesCard />
+        </MoviesCardList>
+      </div>
     </main>
   )
 }
