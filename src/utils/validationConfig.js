@@ -5,7 +5,7 @@ export const validationConfig = {
       message: 'Необходимо заполнить поле',
     },
     pattern: {
-      value: /^[\a-zA-Zа-яА-Я\sёЁ-]+$/,
+      value: new RegExp(/^[\a-zA-Zа-яА-Я\sёЁ-]+$/),
       message: 'Имя может содержать только латиницу, кириллицу, пробел или дефис',
     },
     minLength: {
@@ -19,7 +19,7 @@ export const validationConfig = {
       message: 'Необходимо заполнить поле',
     },
     pattern: {
-      value: /^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/,
+      value: new RegExp(/^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/),
       message: 'Некорректный Email-адрес',
     },
   },
@@ -29,8 +29,12 @@ export const validationConfig = {
       message: 'Необходимо заполнить поле',
     },
     pattern: {
-      value: /^[a-zA-Z0-9]+$/,
-      message: 'Пароль должен состоять только из цифр и латинских букв',
+      value: new RegExp(/(?=.*[0-9])/),
+      message: 'Пароль должен содержать по крайней мере 1 цифру',
     },
+    minLength: {
+      value: 6,
+      message: 'Минимальное количество символов: 6'
+    }
   },
 };
