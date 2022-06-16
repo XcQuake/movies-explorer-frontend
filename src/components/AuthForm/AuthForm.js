@@ -1,6 +1,6 @@
 import './AuthForm.css';
 
-function AuthForm({ onSubmit, children, config }) {
+function AuthForm({ onSubmit, children, config, isValid }) {
   return (
     <form className='authform' onSubmit={onSubmit} noValidate>
       <fieldset className='authform__fieldset'>
@@ -11,6 +11,7 @@ function AuthForm({ onSubmit, children, config }) {
           className='authform__button'
           type='submit'
           aria-label='Авторизация'
+          disabled={!isValid}
         >
           {config.button}
         </button>

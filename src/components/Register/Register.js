@@ -1,28 +1,26 @@
 import './Register.css';
 import { useEffect, useState } from 'react';
+import { useFormWithValidation } from '../../hooks/useFormWithValidation';
+import { validationConfig } from '../../utils/validationConfig';
 import Logo from '../Logo/Logo';
 import AuthForm from '../AuthForm/AuthForm';
-import { useFormWithValidation } from '../../hooks/useFormWithValidation';
-import { useValidation } from '../../hooks/useValidation';
 
 function Register() {
   const [errorMessage, setErrorMessage] = useState('');
-  const [values, setValues] = useState({
+  const initialState = {
     username: '',
     email: '',
     password: '',
-  });
-  const [isValid, setIsValid] = useState(false);
-  const [isTouched, setIsTouched] = useState({
-    username: false,
-    email: false,
-    password: false,
-  })
+  };
+  const initialErrors = {
+    username: '',
+    email: '',
+    password: '',
+  };
 
   function submitHandler(evt) {
     evt.preventDefault()
     setErrorMessage('Пока ничего не работает')
-    console.log('pepega')
   };
 
   const textConfig = {
@@ -31,36 +29,17 @@ function Register() {
     link: 'Войти',
   };
 
-  const usernameValidate = useValidation(values.username, {
-    minLength: 2,
-    isRequired: true,
-    isUsername: true,
+  const {
+    values,
+    handleChange,
+    errors,
+    isValid,
+    resetForm,
+  } = useFormWithValidation({
+    validations: validationConfig,
+    initialState,
+    initialErrors
   });
-
-  const emailValidate = useValidation(values.email, {
-    minLength: 5,
-    isRequired: true,
-    isEmail: true,
-  });
-
-  useEffect(() => {
-    setIsValid(usernameValidate.validity && emailValidate.validity);
-  }, [usernameValidate.validity, emailValidate.validity]);
-
-  const handleChangeInput = (e) => {
-    e.preventDefault();
-    const target = e.target;
-    const name = target.name;
-    const value = target.value;
-    setValues({...values, [name]: value});
-  }
-
-  const handleTouchInput = (e) => {
-    e.preventDefault();
-    const target = e.target;
-    const name = target.name;
-    setIsTouched({...isTouched, [name]: true})
-  }
 
   return (
     <main className='register'>
@@ -86,10 +65,10 @@ function Register() {
               maxLength="20"
               typeof=''
               required
-              onChange={handleChangeInput}
-              onBlur={handleTouchInput}
+              value={values.username || ''}
+              onChange={handleChange}
             />
-            <span className='authform__input-error'>{isTouched.username && usernameValidate.errorMessage}</span>
+            <span className='authform__input-error'>{errors.username}</span>
           </label>
           <label className='authform__field'>
             E-mail
@@ -100,10 +79,10 @@ function Register() {
               minLength="5"
               maxLength="80"
               required
-              onChange={handleChangeInput}
-              onBlur={handleTouchInput}
+              value={values.email || ''}
+              onChange={handleChange}
             />
-            <span className='authform__input-error'>{isTouched.email && emailValidate.errorMessage}</span>
+            <span className='authform__input-error'>{errors.email}</span>
           </label>
           <label className='authform__field'>
             Пароль
@@ -114,10 +93,10 @@ function Register() {
               minLength="6"
               maxLength="30"
               required
-              onChange={handleChangeInput}
-              onBlur={handleTouchInput}
+              value={values.password || ''}
+              onChange={handleChange}
             />
-            <span className='authform__input-error'>{}</span>
+            <span className='authform__input-error'>{errors.password}</span>
           </label>
         </AuthForm>
       </div>
