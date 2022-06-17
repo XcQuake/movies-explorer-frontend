@@ -1,12 +1,13 @@
 import './AuthForm.css';
 
-function AuthForm({ onSubmit, children, config, isValid }) {
+function AuthForm({ onSubmit, error, children, config, isValid }) {
   return (
     <form className='authform' onSubmit={onSubmit} noValidate>
       <fieldset className='authform__fieldset'>
         { children }
       </fieldset>
       <div className='authform__controls'>
+        <span className='authform__error'>{error}</span>
         <button
           className='authform__button'
           type='submit'

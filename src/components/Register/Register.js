@@ -5,7 +5,7 @@ import { validationConfig } from '../../utils/validationConfig';
 import Logo from '../Logo/Logo';
 import AuthForm from '../AuthForm/AuthForm';
 
-function Register() {
+function Register({ onSubmit }) {
   const [errorMessage, setErrorMessage] = useState('');
   const initialState = {
     username: '',
@@ -19,8 +19,12 @@ function Register() {
   };
 
   function submitHandler(evt) {
-    evt.preventDefault()
-    setErrorMessage('Пока ничего не работает')
+    evt.preventDefault();
+    onSubmit(
+      values.username,
+      values.email,
+      values.password,
+    );
   };
 
   const textConfig = {

@@ -5,7 +5,7 @@ import AuthForm from '../AuthForm/AuthForm';
 import Logo from '../Logo/Logo';
 import './Login.css';
 
-function Login() {
+function Login({onSubmit, apiError}) {
   const [errorMessage, setErrorMessage] = useState('');
   const initialState = {
     email: '',
@@ -18,7 +18,10 @@ function Login() {
 
   function submitHandler(evt) {
     evt.preventDefault()
-    setErrorMessage('Что-то пошло не так...')
+    onSubmit(
+      values.email,
+      values.password,
+    );
   };
 
   const textConfig = {
@@ -48,7 +51,7 @@ function Login() {
         </div>
         <AuthForm
           type={'login'}
-          error={errorMessage}
+          error={apiError}
           onSubmit={submitHandler}
           config={textConfig}
           isValid={isValid}
