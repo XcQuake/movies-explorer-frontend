@@ -65,6 +65,11 @@ export default function App() {
       })
   };
 
+  const handleUpdateProfile = () => {
+    auth.updateProfile()
+      .then((user) => console.log(user))
+  }
+
   return (
     <>
       <Route path='/(|movies|saved-movies|profile)'>
@@ -104,6 +109,7 @@ export default function App() {
             <Route path='/profile'>
               <Profile
                 currentUser={currentUser}
+                onSubmit={handleUpdateProfile}
               />
             </Route>
           </ProtectedRoute>

@@ -1,21 +1,28 @@
-import { useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { useFormWithValidation } from '../../hooks/useFormWithValidation';
+import { validationConfig } from '../../utils/validationConfig';
 import './Profile.css';
 
-function Profile() {
+function Profile({currentUser, onSubmit}) {
+  const [userData, setUserData] = useState(currentUser);
   const [isEdited, setIsEdited] = useState(false);
-  const [name, setName] = useState('Виталий');
-  const [email, setEmail] = useState('pochta@yandex.ru');
   const nameInputRef = useRef(false);
-
-  function handleNameChange(evt) {
-    evt.preventDefault();
-    setName(evt.target.value);
+  const initialValues = {
+    name: currentUser.name,
+    email: currentUser.email,
   };
-
-  function handleEmailChange(evt) {
-    evt.preventDefault();
-    setEmail(evt.target.value);
-  }
+  const initialErrors = {
+    name: '',
+    email: '',
+  };
+  const {
+    values,
+    handleChange,
+    errors,
+    isValid,
+    resetForm
+  } = useFormWithValidation({validationConfig, initialValues, initialErrors});
 
   async function handleEditButtonClick(evt) {
     evt.preventDefault();
@@ -26,20 +33,20 @@ function Profile() {
   function handleSaveButtonClick(evt) {
     evt.preventDefault();
     setIsEdited(false);
-  }
+  };
 
   return (
     <main className='profile'>
       <div className='profile__wrapper'>
-        <h2 className='profile__greeting'>Привет, {name}!</h2>
+        <h2 className='profile__greeting'>Привет, {currentUser.username}!</h2>
         <form className='profile__info'>
           <fieldset className='profile__info-fieldset'>
             <label className='profile__info-field'>
               <span className='profile__label'>Имя</span>
               <input className='profile__input'
                 name='name'
-                value={name}
-                onChange={handleNameChange}
+                value={values.name || ''}
+                onChange={handleChange}
                 ref={nameInputRef}
                 disabled={!isEdited}
               />
@@ -49,15 +56,21 @@ function Profile() {
               <input
                 name='email'
                 className='profile__input'
-                value={email}
-                onChange={handleEmailChange}
+                value={values.email || ''}
+                onChange={handleChange}
                 disabled={!isEdited}
               />
             </label>
           </fieldset>
           <div className='profile__controls'>
             { isEdited
-                ? <button className='profile__button profile__button_save' onClick={handleSaveButtonClick}>Сохранить</button>
+                ? <button
+                    className='profile__button profile__button_save'
+                    onClick={handleSaveButtonClick}
+                    disabled={isValid}
+                  >
+                    Сохранить
+                  </button>
                 : <button className='profile__button' onClick={handleEditButtonClick}>Редактировать</button>
             }
             { !isEdited && <button className='profile__button profile__button_exit'>Выйти из&nbsp;аккаунта</button> }
