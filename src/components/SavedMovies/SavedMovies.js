@@ -4,14 +4,14 @@ import MoviesCard from '../MoviesCard/MoviesCard';
 
 function SavedMovies() {
   return (
-    <main className='saved-movies'>
+    <div className='saved-movies'>
       <div className='saved-movies__wrapper'>
         <MoviesCardList>
           <MoviesCard />
           <MoviesCard />
         </MoviesCardList>
       </div>
-    </main>
+    </div>
   )
 }
 

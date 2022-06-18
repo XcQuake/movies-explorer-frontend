@@ -7,7 +7,7 @@ import './Login.css';
 
 function Login({onSubmit, apiError}) {
   const [errorMessage, setErrorMessage] = useState('');
-  const initialState = {
+  const initialValues = {
     email: '',
     password: '',
   };
@@ -38,7 +38,7 @@ function Login({onSubmit, apiError}) {
     resetForm,
   } = useFormWithValidation({
     validations: validationConfig,
-    initialState,
+    initialValues,
     initialErrors
   });
 

@@ -7,7 +7,7 @@ import AuthForm from '../AuthForm/AuthForm';
 
 function Register({ onSubmit }) {
   const [errorMessage, setErrorMessage] = useState('');
-  const initialState = {
+  const initialValues = {
     username: '',
     email: '',
     password: '',
@@ -41,12 +41,12 @@ function Register({ onSubmit }) {
     resetForm,
   } = useFormWithValidation({
     validations: validationConfig,
-    initialState,
+    initialValues,
     initialErrors
   });
 
   return (
-    <main className='register'>
+    <div className='register'>
       <div className='register__wrapper'>
         <div className='register__greeting'>
           <Logo />
@@ -104,7 +104,7 @@ function Register({ onSubmit }) {
           </label>
         </AuthForm>
       </div>
-    </main>
+    </div>
   );
 }
 

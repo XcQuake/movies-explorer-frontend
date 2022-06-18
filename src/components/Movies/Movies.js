@@ -5,7 +5,7 @@ import MoreButton from '../Buttons/MoreButton/MoreButton';
 
 function Movies() {
   return (
-    <main className='movies'>
+    <div className='movies'>
       <div className='movies__wrapper'>
         <MoviesCardList>
           <MoviesCard />
@@ -17,7 +17,7 @@ function Movies() {
         </MoviesCardList>
         <MoreButton />
       </div>
-    </main>
+    </div>
   )
 }
 

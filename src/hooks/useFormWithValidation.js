@@ -1,7 +1,7 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useLayoutEffect } from 'react';
 
-export function useFormWithValidation({validations, initialState, initialErrors}) {
-  const [values, setValues] = useState(initialState);
+export function useFormWithValidation({validations, initialValues, initialErrors}) {
+  const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState(initialErrors);
   const [isValid, setIsValid] = useState(false);
 

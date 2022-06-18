@@ -13,22 +13,23 @@ import Register from '../Register/Register';
 import Navigation from '../Navigation/Navigation';
 import NotFound from '../NotFound/NotFound';
 import * as auth from '../../utils/MainApi';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 export default function App() {
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
   const history = useHistory();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(undefined);
   const [mainApiError, setMainApiError] = useState('');
+  const [currentUser, setCurrentUser] = useState({
+    name: '',
+    email: '',
+  })
 
   function handleBurgerClick() {
     setIsNavigationOpen(!isNavigationOpen);
   };
 
   useEffect(() => {
-    if (isLoggedIn) {
-      console.log('logged in');
-      return;
-    }
     handleCheckToken();
   }, [isLoggedIn]);
 
@@ -51,46 +52,64 @@ export default function App() {
 
   const handleCheckToken = () => {
     auth.checkToken()
-      .then(() => setIsLoggedIn(true))
-      .catch((err) => setMainApiError(err))
+      .then((user) => {
+        setIsLoggedIn(true);
+        setCurrentUser({
+          name: user.name,
+          email: user.email,
+        });
+      })
+      .catch((err) => {
+        setIsLoggedIn(false);
+        setMainApiError(err);
+      })
   };
 
   return (
     <>
       <Route path='/(|movies|saved-movies|profile)'>
-          <Header
-            onBurgerClick={handleBurgerClick}
-          />
-        </Route>
-      <Switch>
-        <Route path='/signin'>
-          <Login
-            onSubmit={handleSignIn}
-            apiError={mainApiError}
-          />
-        </Route>
-        <Route path='/signup' component={Register}>
-          <Register
-            onSubmit={handleSignUp}
-            apiError={mainApiError}
-          />
-        </Route>
-        <Route path='/movies'>
-          <SearchForm />
-          <Movies />
-        </Route>
-        <Route path='/saved-movies'>
-          <SearchForm />
-          <SavedMovies />
-        </Route>
-        <Route path='/profile'>
-          <Profile />
-        </Route>
-        <Route exact path='/'>
-          <Main />
-        </Route>
-        <Route exact path='*' component={NotFound} />
-      </Switch>
+        <Header
+          isLoggedIn={isLoggedIn}
+          onBurgerClick={handleBurgerClick}
+        />
+      </Route>
+      <main className='main'>
+        <Switch>
+          <Route path='/signin'>
+            <Login
+              onSubmit={handleSignIn}
+              apiError={mainApiError}
+            />
+          </Route>
+          <Route path='/signup' component={Register}>
+            <Register
+              onSubmit={handleSignUp}
+              apiError={mainApiError}
+            />
+          </Route>
+          <Route exact path='/'>
+            <Main />
+          </Route>
+          <ProtectedRoute
+            isLoggedIn={isLoggedIn}
+          >
+            <Route path='/movies'>
+              <SearchForm />
+              <Movies />
+            </Route>
+            <Route path='/saved-movies'>
+              <SearchForm />
+              <SavedMovies />
+            </Route>
+            <Route path='/profile'>
+              <Profile
+                currentUser={currentUser}
+              />
+            </Route>
+          </ProtectedRoute>
+          <Route exact path='*' component={NotFound} />
+        </Switch>
+      </main>
       <Route path='/(|movies|saved-movies)' component={Footer} />
       <Navigation isOpen={isNavigationOpen} />
     </>
