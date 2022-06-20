@@ -57,16 +57,17 @@ export const checkToken = () => {
 
 
 export const updateProfile = (username, email) => {
-  return fetch(`${BASE_URL}/user/me`, {
+  console.log(username)
+  return fetch(`${BASE_URL}/users/me`, {
     credentials: 'include',
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: {
-      'name': username,
-      'email': email,
-    }
+    body: JSON.stringify ({
+      "name": username,
+      "email": email,
+    })
   })
   .then((res) => processResult(res))
 }

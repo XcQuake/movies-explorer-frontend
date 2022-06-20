@@ -1,6 +1,7 @@
 import './App.css';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import * as auth from '../../utils/MainApi';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
@@ -12,7 +13,6 @@ import Login from '../Login/Login';
 import Register from '../Register/Register';
 import Navigation from '../Navigation/Navigation';
 import NotFound from '../NotFound/NotFound';
-import * as auth from '../../utils/MainApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 export default function App() {
@@ -21,7 +21,7 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(undefined);
   const [mainApiError, setMainApiError] = useState('');
   const [currentUser, setCurrentUser] = useState({
-    name: '',
+    username: '',
     email: '',
   })
 
@@ -53,11 +53,11 @@ export default function App() {
   const handleCheckToken = () => {
     auth.checkToken()
       .then((user) => {
-        setIsLoggedIn(true);
         setCurrentUser({
-          name: user.name,
+          username: user.name,
           email: user.email,
         });
+        setIsLoggedIn(true);
       })
       .catch((err) => {
         setIsLoggedIn(false);
@@ -65,9 +65,15 @@ export default function App() {
       })
   };
 
-  const handleUpdateProfile = () => {
-    auth.updateProfile()
-      .then((user) => console.log(user))
+  const handleUpdateProfile = ({username, email}) => {
+    auth.updateProfile(username, email)
+      .then((user) => {
+        setCurrentUser({
+          username: user.name,
+          email: user.email,
+        });
+      })
+      .catch((err) => console.log(err))
   }
 
   return (
