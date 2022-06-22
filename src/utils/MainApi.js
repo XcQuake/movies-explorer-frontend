@@ -1,8 +1,8 @@
 const BASE_URL = 'https://api.xcqmovies.nomoredomains.xyz';
 
-function processResult(res) {
-  if (res.ok) return res.json();
-  return Promise.reject(res.status);
+async function processResult(res) {
+  const result = await res.json();
+  return res.ok ? result : Promise.reject(result.message);
 };
 
 export const signUp = (username, email, password) => {
@@ -57,7 +57,6 @@ export const checkToken = () => {
 
 
 export const updateProfile = (username, email) => {
-  console.log(username)
   return fetch(`${BASE_URL}/users/me`, {
     credentials: 'include',
     method: 'PATCH',
