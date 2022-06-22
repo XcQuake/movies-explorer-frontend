@@ -1,7 +1,7 @@
 import './App.css';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import * as auth from '../../utils/MainApi';
+import * as MainApi from '../../utils/MainApi';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
@@ -35,35 +35,39 @@ export default function App() {
   }, [isLoggedIn]);
 
   const handleSignIn = (email, password) => {
-    auth.signIn(email, password)
-      .then((data) => {
+    MainApi.signIn(email, password)
+      .then(() => {
+        localStorage.setItem('isTokenExist', true);
         setIsLoggedIn(true);
+        handleCheckToken();
+        setMainApiError('');
         history.push('/movies');
       })
       .catch((err) => setMainApiError(err))
   };
 
   const handleSignUp = (username, email, password) => {
-    auth.signUp(username, email, password)
-      .then((data) => {
+    MainApi.signUp(username, email, password)
+      .then(() => {
         handleSignIn(email, password);
       })
       .catch((err) => setMainApiError(err))
   };
 
   const handleCheckToken = () => {
-    auth.checkToken()
-      .then((user) => {
-        setCurrentUser({
-          username: user.name,
-          email: user.email,
-        });
-        setIsLoggedIn(true);
-      })
-      .catch((err) => {
-        setIsLoggedIn(false);
-        setMainApiError(err);
-      })
+    if (localStorage.getItem('isTokenExist')){
+      MainApi.checkToken()
+        .then((user) => {
+          setCurrentUser({
+            username: user.name,
+            email: user.email,
+          });
+          setIsLoggedIn(true);
+        })
+        .catch((err) => {
+          setIsLoggedIn(false);
+        })
+    } else setIsLoggedIn(false);
   };
 
   return (

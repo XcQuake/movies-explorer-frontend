@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useFormWithValidation } from '../../hooks/useFormWithValidation';
 import { validationConfig } from '../../utils/validationConfig';
 import AuthForm from '../AuthForm/AuthForm';
@@ -6,7 +5,6 @@ import Logo from '../Logo/Logo';
 import './Login.css';
 
 function Login({onSubmit, apiError}) {
-  const [errorMessage, setErrorMessage] = useState('');
   const initialValues = {
     email: '',
     password: '',
@@ -35,7 +33,6 @@ function Login({onSubmit, apiError}) {
     handleChange,
     errors,
     isValid,
-    resetForm,
   } = useFormWithValidation({
     validations: validationConfig,
     initialValues,

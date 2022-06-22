@@ -1,12 +1,10 @@
 import './Register.css';
-import { useEffect, useState } from 'react';
 import { useFormWithValidation } from '../../hooks/useFormWithValidation';
 import { validationConfig } from '../../utils/validationConfig';
 import Logo from '../Logo/Logo';
 import AuthForm from '../AuthForm/AuthForm';
 
-function Register({ onSubmit }) {
-  const [errorMessage, setErrorMessage] = useState('');
+function Register({ onSubmit, apiError }) {
   const initialValues = {
     username: '',
     email: '',
@@ -18,13 +16,13 @@ function Register({ onSubmit }) {
     password: '',
   };
 
-  function submitHandler(evt) {
+  function handleSubmit(evt) {
     evt.preventDefault();
     onSubmit(
       values.username,
       values.email,
       values.password,
-    );
+    )
   };
 
   const textConfig = {
@@ -38,11 +36,10 @@ function Register({ onSubmit }) {
     handleChange,
     errors,
     isValid,
-    resetForm,
   } = useFormWithValidation({
     validations: validationConfig,
     initialValues,
-    initialErrors
+    initialErrors,
   });
 
   return (
@@ -54,8 +51,8 @@ function Register({ onSubmit }) {
         </div>
         <AuthForm
           type={'register'}
-          error={errorMessage}
-          onSubmit={submitHandler}
+          error={apiError}
+          onSubmit={handleSubmit}
           config={textConfig}
           isValid={isValid}
         >
