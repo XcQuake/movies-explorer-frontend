@@ -5,7 +5,7 @@ import { useFormWithValidation } from '../../hooks/useFormWithValidation';
 import { validationConfig } from '../../utils/validationConfig';
 import './Profile.css';
 
-function Profile({}) {
+function Profile({onSuccesChange}) {
   const userContext = useContext(CurrentUserContext);
   const [userData, setUserData] = useState(userContext.userData);
   const initialValues = {
@@ -42,6 +42,7 @@ function Profile({}) {
       .then(() => {
         setApiError('');
         setIsEdit(false);
+        onSuccesChange('Данные аккаунта успешно изменены!')
       })
       .catch((err) => {
         setApiError(err);

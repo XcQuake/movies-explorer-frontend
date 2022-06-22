@@ -15,16 +15,21 @@ import Navigation from '../Navigation/Navigation';
 import NotFound from '../NotFound/NotFound';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import Popup from '../Popup/Popup';
 
 export default function App() {
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
-  const history = useHistory();
   const [isLoggedIn, setIsLoggedIn] = useState(undefined);
   const [mainApiError, setMainApiError] = useState('');
   const [currentUser, setCurrentUser] = useState({
     username: '',
     email: '',
   });
+  const [popupState, setPopupState] = useState({
+    isActive: false,
+    message: '',
+  })
+  const history = useHistory();
 
   function handleBurgerClick() {
     setIsNavigationOpen(!isNavigationOpen);
@@ -70,6 +75,13 @@ export default function App() {
     } else setIsLoggedIn(false);
   };
 
+  const handleOpenPopup = (text) => {
+    setPopupState({
+      isActive: true,
+      message: text,
+    })
+  };
+
   return (
     <CurrentUserContext.Provider value={{userData: currentUser, setCurrentUser}}>
       <Route path='/(|movies|saved-movies|profile)'>
@@ -107,7 +119,7 @@ export default function App() {
               <SavedMovies />
             </Route>
             <Route path='/profile'>
-              <Profile />
+              <Profile onSuccesChange={handleOpenPopup} />
             </Route>
           </ProtectedRoute>
           <Route exact path='*' component={NotFound} />
@@ -115,6 +127,7 @@ export default function App() {
       </main>
       <Route path='/(|movies|saved-movies)' component={Footer} />
       <Navigation isOpen={isNavigationOpen} />
+      <Popup isActive={popupState.isActive} setState={setPopupState} message={popupState.message}/>
     </CurrentUserContext.Provider>
   );
 }
