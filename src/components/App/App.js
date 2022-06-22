@@ -14,6 +14,7 @@ import Register from '../Register/Register';
 import Navigation from '../Navigation/Navigation';
 import NotFound from '../NotFound/NotFound';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 export default function App() {
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
@@ -23,7 +24,7 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState({
     username: '',
     email: '',
-  })
+  });
 
   function handleBurgerClick() {
     setIsNavigationOpen(!isNavigationOpen);
@@ -65,19 +66,8 @@ export default function App() {
       })
   };
 
-  const handleUpdateProfile = ({username, email}) => {
-    auth.updateProfile(username, email)
-      .then((user) => {
-        setCurrentUser({
-          username: user.name,
-          email: user.email,
-        });
-      })
-      .catch((err) => console.log(err))
-  }
-
   return (
-    <>
+    <CurrentUserContext.Provider value={{userData: currentUser, setCurrentUser}}>
       <Route path='/(|movies|saved-movies|profile)'>
         <Header
           isLoggedIn={isLoggedIn}
@@ -92,7 +82,7 @@ export default function App() {
               apiError={mainApiError}
             />
           </Route>
-          <Route path='/signup' component={Register}>
+          <Route path='/signup'>
             <Register
               onSubmit={handleSignUp}
               apiError={mainApiError}
@@ -113,10 +103,7 @@ export default function App() {
               <SavedMovies />
             </Route>
             <Route path='/profile'>
-              <Profile
-                currentUser={currentUser}
-                onSubmit={handleUpdateProfile}
-              />
+              <Profile />
             </Route>
           </ProtectedRoute>
           <Route exact path='*' component={NotFound} />
@@ -124,6 +111,6 @@ export default function App() {
       </main>
       <Route path='/(|movies|saved-movies)' component={Footer} />
       <Navigation isOpen={isNavigationOpen} />
-    </>
+    </CurrentUserContext.Provider>
   );
 }
