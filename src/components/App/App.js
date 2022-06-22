@@ -1,5 +1,5 @@
 import './App.css';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import * as MainApi from '../../utils/MainApi';
 import Header from '../Header/Header';
@@ -110,19 +110,22 @@ export default function App() {
           <ProtectedRoute
             isLoggedIn={isLoggedIn}
           >
-            <Route path='/movies'>
-              <SearchForm />
-              <Movies />
-            </Route>
-            <Route path='/saved-movies'>
-              <SearchForm />
-              <SavedMovies />
-            </Route>
-            <Route path='/profile'>
-              <Profile onSuccesChange={handleOpenPopup} />
-            </Route>
+            <Switch>
+              <Route path='/movies'>
+                <SearchForm />
+                <Movies />
+              </Route>
+              <Route path='/saved-movies'>
+                <SearchForm />
+                <SavedMovies />
+              </Route>
+              <Route path='/profile'>
+                <Profile onSuccesChange={handleOpenPopup} />
+              </Route>
+              <Route path='/404' component={NotFound} />
+              <Redirect to='/404' />
+            </Switch>
           </ProtectedRoute>
-          <Route exact path='*' component={NotFound} />
         </Switch>
       </main>
       <Route path='/(|movies|saved-movies)' component={Footer} />
