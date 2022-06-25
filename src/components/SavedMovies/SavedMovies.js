@@ -7,8 +7,6 @@ function SavedMovies() {
     <div className='saved-movies'>
       <div className='saved-movies__wrapper'>
         <MoviesCardList>
-          <MoviesCard />
-          <MoviesCard />
         </MoviesCardList>
       </div>
     </div>
