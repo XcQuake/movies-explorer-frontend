@@ -1,7 +1,9 @@
 import './App.css';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import * as MainApi from '../../utils/MainApi';
+import * as MoviesApi from '../../utils/MoviesApi';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
@@ -14,13 +16,14 @@ import Register from '../Register/Register';
 import Navigation from '../Navigation/Navigation';
 import NotFound from '../NotFound/NotFound';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import Popup from '../Popup/Popup';
+import filterMovies from '../../utils/filterMovies';
 
 export default function App() {
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(undefined);
   const [mainApiError, setMainApiError] = useState('');
+  const [movies, setMovies] = useState([]);
   const [currentUser, setCurrentUser] = useState({
     username: '',
     email: '',
@@ -38,6 +41,16 @@ export default function App() {
   useEffect(() => {
     handleCheckToken();
   }, [isLoggedIn]);
+
+  function getMovies(keyWord) {
+    MoviesApi.getMovies()
+      .then((movies) => {
+        localStorage.setItem('movies', JSON.stringify(
+          filterMovies({movies, keyWord})
+        ));
+      })
+      .catch(err => console.log(err))
+  };
 
   const handleSignIn = (email, password) => {
     MainApi.signIn(email, password)
@@ -112,7 +125,7 @@ export default function App() {
           >
             <Switch>
               <Route path='/movies'>
-                <SearchForm />
+                <SearchForm onSubmit={getMovies}/>
                 <Movies />
               </Route>
               <Route path='/saved-movies'>

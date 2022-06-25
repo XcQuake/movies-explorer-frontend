@@ -34,7 +34,9 @@
   line-height: 10px;
   text-align: center;
   color: #A0A0A0;
-  padding-right: 10px;
+  background-color: #F9F9F9;
+  padding: 3px 4px;
+  border-radius: 3px;
 }
 
 @media (min-width: 400px) {
@@ -43,7 +45,7 @@
   }
 
   .movies-card__image {
-    height: 190px
+    height: 190px;
   }
 
   .movies-card__title {
