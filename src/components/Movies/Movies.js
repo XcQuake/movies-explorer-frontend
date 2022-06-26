@@ -4,7 +4,7 @@ import MoviesCard from '../MoviesCard/MoviesCard';
 import MoreButton from '../Buttons/MoreButton/MoreButton';
 import { useState, useEffect } from 'react';
 
-function Movies() {
+function Movies({searchedMovies}) {
   const [movies, setMovies] = useState([]);
   const [width, setWidth] = useState(window.innerWidth);
 
@@ -20,11 +20,10 @@ function Movies() {
     desktop: 870,
   };
 
-  const filteredMovies = JSON.parse(localStorage.getItem('movies'));
-
+  // Достаёт массив с фильмами из LocalStorage при поиске
   useEffect(() => {
-    console.log(filteredMovies)
-  }, [filteredMovies])
+    setMovies(searchedMovies);
+  }, [searchedMovies])
 
   // Добавляет слушатель изменения ширины экрана
   useEffect(() => {
@@ -72,7 +71,6 @@ function Movies() {
     }
   };
 
-  // console.log(countOfCards)
   const countedMovies = movies.slice(0, countOfCards);
   const movieCards = countedMovies.map((movie) => (
       <MoviesCard

@@ -1,14 +1,11 @@
 import './SearchForm.css';
-import FilterCheckbox from '../Buttons/FilterCheckbox/FilterCheckbox';
 import { useState } from 'react';
 
-function SearchForm({onSubmit}) {
+function SearchForm({onSubmit, children}) {
   const [keyWord, setKeyWord] = useState('');
-
   const handleInput = (evt) => {
     setKeyWord(evt.target.value);
   };
-
   const handleSubmit = (evt) => {
     evt.preventDefault();
     onSubmit(keyWord);
@@ -32,7 +29,7 @@ function SearchForm({onSubmit}) {
           />
           <button type='submit' className='search-form__search-button'>Поиск</button>
         </form>
-        <FilterCheckbox />
+        {children}
       </div>
     </section>
   );

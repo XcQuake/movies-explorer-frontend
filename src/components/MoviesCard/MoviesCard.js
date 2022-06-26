@@ -1,5 +1,6 @@
 import './MoviesCard.css';
 import SaveButton from '../Buttons/MovieButton/MovieButton';
+import React from 'react';
 
 function MoviesCard({movieData}) {
   const movie = {
@@ -24,4 +25,4 @@ function MoviesCard({movieData}) {
   );
 }
 
-export default MoviesCard;
+export default React.memo(MoviesCard);

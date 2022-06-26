@@ -1,6 +1,6 @@
 import './FilterCheckbox.css';
 
-function FilterCheckbox() {
+function FilterCheckbox({isChecked, onChange}) {
   return (
     <form className='filter-checkbox'>
       <label className='filter-checkbox__label'>
@@ -9,6 +9,8 @@ function FilterCheckbox() {
           type='checkbox'
           name='shortfilm'
           id='shorfilm'
+          checked={isChecked}
+          onChange={onChange}
         />
         <span className='filter-checkox__slider' />
         Короткометражки

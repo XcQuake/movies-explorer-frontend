@@ -17,13 +17,18 @@ import Navigation from '../Navigation/Navigation';
 import NotFound from '../NotFound/NotFound';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Popup from '../Popup/Popup';
-import filterMovies from '../../utils/filterMovies';
+import MoviesFilter from '../../utils/MoviesFilter';
+import FilterCheckbox from '../Buttons/FilterCheckbox/FilterCheckbox';
 
 export default function App() {
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(undefined);
   const [mainApiError, setMainApiError] = useState('');
-  const [movies, setMovies] = useState([]);
+  const [searchProps, setSearchProps] = useState({
+    keyWord: '',
+    isShortFilms: false,
+  });
+  const [searchedMovies, setSearchedMovies] = useState([]);
   const [currentUser, setCurrentUser] = useState({
     username: '',
     email: '',
@@ -31,7 +36,7 @@ export default function App() {
   const [popupState, setPopupState] = useState({
     isActive: false,
     message: '',
-  })
+  });
   const history = useHistory();
 
   function handleBurgerClick() {
@@ -42,15 +47,38 @@ export default function App() {
     handleCheckToken();
   }, [isLoggedIn]);
 
-  function getMovies(keyWord) {
+  function handleChangeFilterCheckbox() {
+    setSearchProps({...searchProps, isShortFilms: !searchProps.isShortFilms})
+  };
+
+  function handleSearchSubmit(keyWord) {
+    setSearchProps({...searchProps, keyWord: keyWord})
+  };
+
+  // Фильтрация фильмов при изменении параметров поиска
+  useEffect(() => {
+    const moviesFilter = new MoviesFilter(40);
+    function promiseFilterMovies(movies, keyWord) {
+      return new Promise((resolve) => {
+        const filteredMovies = moviesFilter.filterByName(movies, keyWord);
+        resolve(filteredMovies);
+      })
+    };
     MoviesApi.getMovies()
       .then((movies) => {
-        localStorage.setItem('movies', JSON.stringify(
-          filterMovies({movies, keyWord})
-        ));
+        promiseFilterMovies(movies, searchProps.keyWord)
+          .then((filteredMovies) => {
+            if (searchProps.isShortFilms) { // Короткометражки
+              const shortFilms = moviesFilter.filterByDuration(filteredMovies);
+              localStorage.setItem('movies', JSON.stringify(shortFilms));
+              setSearchedMovies(shortFilms);
+            } else { // Полнометражки
+              localStorage.setItem('movies', JSON.stringify(filteredMovies));
+              setSearchedMovies(filteredMovies)
+            }
+          })
       })
-      .catch(err => console.log(err))
-  };
+  }, [searchProps]);
 
   const handleSignIn = (email, password) => {
     MainApi.signIn(email, password)
@@ -125,8 +153,13 @@ export default function App() {
           >
             <Switch>
               <Route path='/movies'>
-                <SearchForm onSubmit={getMovies}/>
-                <Movies />
+                <SearchForm onSubmit={handleSearchSubmit}>
+                  <FilterCheckbox
+                    isChecked={searchProps.isShortFilms}
+                    onChange={handleChangeFilterCheckbox}
+                  />
+                </SearchForm>
+                <Movies searchedMovies={searchedMovies}/>
               </Route>
               <Route path='/saved-movies'>
                 <SearchForm />
