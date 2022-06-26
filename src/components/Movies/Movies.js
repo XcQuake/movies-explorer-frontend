@@ -20,14 +20,20 @@ function Movies({searchedMovies}) {
     desktop: 870,
   };
 
-  // Достаёт массив с фильмами из LocalStorage при поиске
+  // Достаёт массив с фильмами из LocalStorage при инициализации
+  // useEffect(() => {
+
+  //   setMovies
+  // }, [])
+
   useEffect(() => {
     setMovies(searchedMovies);
   }, [searchedMovies])
 
   // Добавляет слушатель изменения ширины экрана
   useEffect(() => {
-    setMovies(JSON.parse(localStorage.getItem('movies')));
+    const localMovies = JSON.parse(localStorage.getItem('movies'));
+    localMovies && setMovies(localMovies);
     window.addEventListener("resize", handleResizeWindow);
     return () => {
       window.removeEventListener("resize", handleResizeWindow);

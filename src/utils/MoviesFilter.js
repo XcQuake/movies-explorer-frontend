@@ -1,7 +1,6 @@
 class MoviesFilter {
   constructor(shortFilmsDuration) {
     this._shortFilmsDuration = shortFilmsDuration;
-    console.log('test')
   };
 
   filterByName(movies, keyWord) {

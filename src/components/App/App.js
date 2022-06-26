@@ -47,28 +47,44 @@ export default function App() {
     handleCheckToken();
   }, [isLoggedIn]);
 
-  function handleChangeFilterCheckbox() {
-    setSearchProps({...searchProps, isShortFilms: !searchProps.isShortFilms})
+  function handleChangeFilterCheckbox(isChecked) {
+    localStorage.setItem('isShortFilms', isChecked);
+    const localMovies = JSON.parse(localStorage.getItem('movies'));
+    // перефильтровать только если уже был выполнен поиск фильмов
+    if (localMovies && localMovies.length !== 0) {
+      handleSearchMovies();
+    }
   };
 
   function handleSearchSubmit(keyWord) {
-    setSearchProps({...searchProps, keyWord: keyWord})
+    localStorage.setItem('keyWord', keyWord);
+    handleSearchMovies();
   };
 
-  // Фильтрация фильмов при изменении параметров поиска
   useEffect(() => {
-    const moviesFilter = new MoviesFilter(40);
-    function promiseFilterMovies(movies, keyWord) {
-      return new Promise((resolve) => {
-        const filteredMovies = moviesFilter.filterByName(movies, keyWord);
-        resolve(filteredMovies);
-      })
-    };
+    setSearchProps({
+      keyWord: localStorage.getItem('keyWord'),
+      isShortFilms: JSON.parse(localStorage.getItem('isShortFilms')),
+    });
+  }, []);
+
+  const moviesFilter = new MoviesFilter(40);
+  function promiseFilterMovies(movies, keyWord) {
+    return new Promise((resolve) => {
+      const filteredMovies = moviesFilter.filterByName(movies, keyWord);
+      resolve(filteredMovies);
+    })
+  };
+
+  function handleSearchMovies() {
+    const keyWord = localStorage.getItem('keyWord');
+    const isShortFilms = JSON.parse(localStorage.getItem('isShortFilms'));
+    console.log('1')
     MoviesApi.getMovies()
       .then((movies) => {
-        promiseFilterMovies(movies, searchProps.keyWord)
+        promiseFilterMovies(movies, keyWord)
           .then((filteredMovies) => {
-            if (searchProps.isShortFilms) { // Короткометражки
+            if (isShortFilms) { // Короткометражки
               const shortFilms = moviesFilter.filterByDuration(filteredMovies);
               localStorage.setItem('movies', JSON.stringify(shortFilms));
               setSearchedMovies(shortFilms);
@@ -78,7 +94,7 @@ export default function App() {
             }
           })
       })
-  }, [searchProps]);
+  };
 
   const handleSignIn = (email, password) => {
     MainApi.signIn(email, password)
@@ -162,7 +178,12 @@ export default function App() {
                 <Movies searchedMovies={searchedMovies}/>
               </Route>
               <Route path='/saved-movies'>
-                <SearchForm />
+                <SearchForm>
+                  <FilterCheckbox
+                    isChecked={searchProps.isShortFilms}
+                    onChange={handleChangeFilterCheckbox}
+                  />
+                </SearchForm>
                 <SavedMovies />
               </Route>
               <Route path='/profile'>

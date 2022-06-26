@@ -1,7 +1,8 @@
 import './SearchForm.css';
 import { useState } from 'react';
+import { useEffect } from 'react';
 
-function SearchForm({onSubmit, children}) {
+function SearchForm({onSubmit, onXryak, children}) {
   const [keyWord, setKeyWord] = useState('');
   const handleInput = (evt) => {
     setKeyWord(evt.target.value);
@@ -10,6 +11,11 @@ function SearchForm({onSubmit, children}) {
     evt.preventDefault();
     onSubmit(keyWord);
   };
+
+  useEffect(() => {
+    const storageKeyWord = localStorage.getItem('keyWord');
+    storageKeyWord && setKeyWord(storageKeyWord);
+  }, [])
 
   return (
     <section className='search-form'>

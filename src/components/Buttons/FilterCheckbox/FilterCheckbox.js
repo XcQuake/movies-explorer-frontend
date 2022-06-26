@@ -1,6 +1,19 @@
+import { useState, useEffect } from 'react';
 import './FilterCheckbox.css';
 
-function FilterCheckbox({isChecked, onChange}) {
+function FilterCheckbox({onChange}) {
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleChange = () => {
+    setIsChecked(!isChecked);
+    onChange(!isChecked);
+  };
+
+  useEffect(() => {
+    const storageCheckboxState = JSON.parse(localStorage.getItem('isShortFilms'));
+    storageCheckboxState && setIsChecked(storageCheckboxState);
+  }, [])
+
   return (
     <form className='filter-checkbox'>
       <label className='filter-checkbox__label'>
@@ -10,7 +23,7 @@ function FilterCheckbox({isChecked, onChange}) {
           name='shortfilm'
           id='shorfilm'
           checked={isChecked}
-          onChange={onChange}
+          onChange={handleChange}
         />
         <span className='filter-checkox__slider' />
         Короткометражки
