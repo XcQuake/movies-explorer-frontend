@@ -32,21 +32,29 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState({
     username: '',
     email: '',
+    id: '',
   });
   const [popupState, setPopupState] = useState({
     isActive: false,
     message: '',
   });
+  // Состояния SavedMovies
+  const [savedMovies, setSavedMovies] = useState([]);
   const history = useHistory();
 
-  function handleBurgerClick() {
-    setIsNavigationOpen(!isNavigationOpen);
-  };
-
+// Функции инициализации
   useEffect(() => {
     handleCheckToken();
-  }, [isLoggedIn]);
+  }, []);
 
+  useEffect(() => {
+    setSearchProps({
+      keyWord: localStorage.getItem('keyWord'),
+      isShortFilms: JSON.parse(localStorage.getItem('isShortFilms')),
+    });
+  }, []);
+
+// Функции Movies
   function handleChangeFilterCheckbox(isChecked) {
     localStorage.setItem('isShortFilms', isChecked);
     const localMovies = JSON.parse(localStorage.getItem('movies'));
@@ -61,13 +69,6 @@ export default function App() {
     handleSearchMovies();
   };
 
-  useEffect(() => {
-    setSearchProps({
-      keyWord: localStorage.getItem('keyWord'),
-      isShortFilms: JSON.parse(localStorage.getItem('isShortFilms')),
-    });
-  }, []);
-
   const moviesFilter = new MoviesFilter(40);
   function promiseFilterMovies(movies, keyWord) {
     return new Promise((resolve) => {
@@ -79,7 +80,6 @@ export default function App() {
   function handleSearchMovies() {
     const keyWord = localStorage.getItem('keyWord');
     const isShortFilms = JSON.parse(localStorage.getItem('isShortFilms'));
-    console.log('1')
     MoviesApi.getMovies()
       .then((movies) => {
         promiseFilterMovies(movies, keyWord)
@@ -96,6 +96,8 @@ export default function App() {
       })
   };
 
+
+// Функции аутентификации
   const handleSignIn = (email, password) => {
     MainApi.signIn(email, password)
       .then(() => {
@@ -116,6 +118,12 @@ export default function App() {
       .catch((err) => setMainApiError(err))
   };
 
+  const getSavedMovies = () => {
+    MainApi.getSavedMovies()
+      .then(movies => setSavedMovies(movies))
+      .catch(err => console.log(err))
+  }
+
   const handleCheckToken = () => {
     if (localStorage.getItem('isTokenExist')){
       MainApi.checkToken()
@@ -123,15 +131,20 @@ export default function App() {
           setCurrentUser({
             username: user.name,
             email: user.email,
+            id: user._id
           });
           setIsLoggedIn(true);
         })
+        .then(
+          getSavedMovies()
+        )
         .catch((err) => {
           setIsLoggedIn(false);
         })
     } else setIsLoggedIn(false);
   };
 
+// Функции интерфейса
   const handleOpenPopup = (text) => {
     setPopupState({
       isActive: true,
@@ -139,8 +152,17 @@ export default function App() {
     })
   };
 
+  function handleBurgerClick() {
+    setIsNavigationOpen(!isNavigationOpen);
+  };
+
   return (
-    <CurrentUserContext.Provider value={{userData: currentUser, setCurrentUser}}>
+    <CurrentUserContext.Provider value={{
+      userData: currentUser,
+      setCurrentUser,
+      savedMovies: savedMovies,
+      setSavedMovies,
+    }}>
       <Route path='/(|movies|saved-movies|profile)'>
         <Header
           isLoggedIn={isLoggedIn}
@@ -184,7 +206,7 @@ export default function App() {
                     onChange={handleChangeFilterCheckbox}
                   />
                 </SearchForm>
-                <SavedMovies />
+                <SavedMovies movies={savedMovies} />
               </Route>
               <Route path='/profile'>
                 <Profile onSuccesChange={handleOpenPopup} />

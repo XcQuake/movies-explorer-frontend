@@ -69,4 +69,50 @@ export const updateProfile = (username, email) => {
     })
   })
   .then((res) => processResult(res))
-}
+};
+
+export const saveMovie = (movie) => {
+  return fetch(`${BASE_URL}/movies`, {
+    credentials: 'include',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify ({
+      country: movie.country,
+      director: movie.director,
+      duration: movie.duration,
+      year: movie.year,
+      description: movie.description,
+      image: `https://api.nomoreparties.co/${movie.image.url}`,
+      trailerLink: movie.trailerLink,
+      thumbnail: `https://api.nomoreparties.co/${movie.image.url}`,
+      movieId: movie.id,
+      nameRU: movie.nameRU,
+      nameEN: movie.nameEN,
+    })
+  })
+  .then((res) => processResult(res))
+};
+
+export const getSavedMovies = () => {
+  return fetch(`${BASE_URL}/movies`, {
+    credentials: 'include',
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  .then((res) => processResult(res))
+};
+
+export const deleteMovie = (id) => {
+  return fetch(`${BASE_URL}/movies/${id}`, {
+    credentials: 'include',
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  .then((res) => processResult(res))
+};

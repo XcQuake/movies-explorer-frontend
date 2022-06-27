@@ -12,6 +12,7 @@
   border-radius: 6px;
   object-fit: cover;
   display: block;
+  text-align: center;
 }
 
 .movies-card__description {

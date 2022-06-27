@@ -1,22 +1,22 @@
 import './SaveButton.css';
 import { useState } from 'react';
 import { Route } from 'react-router-dom';
+import { useEffect } from 'react';
 
-function SaveButton({onClick}) {
+function SaveButton({onClick, isMovieSaved}) {
   const [isSaved, setIsSaved] = useState(false);
 
-  function saveHandler() {
-    setIsSaved(!isSaved);
-    onClick();
-  };
+  useEffect(() => {
+    setIsSaved(isMovieSaved)
+  }, [isMovieSaved])
 
   return (
     <>
       <Route path='/movies'>
         <button
-          className={`save-button ${isSaved && 'save-button_saved'}`}
+          className={isSaved ? 'save-button save-button_saved' : 'save-button'}
           type='button'
-          onClick={saveHandler}
+          onClick={onClick}
         >
           <span className='save-button__text'>Сохранить</span>
         </button>
@@ -25,7 +25,7 @@ function SaveButton({onClick}) {
         <button
           className={`save-button save-button_remove`}
           type='button'
-          onClick={saveHandler}
+          onClick={onClick}
         >
         </button>
       </Route>

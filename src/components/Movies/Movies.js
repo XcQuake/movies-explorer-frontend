@@ -20,12 +20,6 @@ function Movies({searchedMovies}) {
     desktop: 870,
   };
 
-  // Достаёт массив с фильмами из LocalStorage при инициализации
-  // useEffect(() => {
-
-  //   setMovies
-  // }, [])
-
   useEffect(() => {
     setMovies(searchedMovies);
   }, [searchedMovies])
@@ -82,6 +76,10 @@ function Movies({searchedMovies}) {
       <MoviesCard
         key={movie.id}
         movieData={movie}
+        id={movie.id}
+        image={`https://api.nomoreparties.co/${movie.image.url}`}
+        nameRU={movie.nameRU}
+        duration={movie.duration}
       />
     )
   );
