@@ -5,12 +5,12 @@ class MoviesFilter {
 
   filterByName(movies, keyWord) {
     if (!keyWord) return [];
-    const keyW = keyWord.toLowerCase();
+    const keyW = keyWord.toLowerCase().trim();
     const filteredMovies = [];
 
     movies.forEach((movie) => {
-      const ruName = movie.nameRU && movie.nameRU.toLowerCase();
-      const enName = movie.nameEN && movie.nameEN.toLowerCase();
+      const ruName = movie.nameRU && movie.nameRU.toLowerCase().trim();
+      const enName = movie.nameEN && movie.nameEN.toLowerCase().trim();
 
       if ((ruName && ruName.match(keyW)) || (enName && enName.match(keyW))) {
         filteredMovies.push(movie);
