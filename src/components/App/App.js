@@ -120,7 +120,9 @@ export default function App() {
 
   const getSavedMovies = () => {
     MainApi.getSavedMovies()
-      .then(movies => setSavedMovies(movies))
+      .then(movies => setSavedMovies(
+        movies.filter(movie => movie.owner = currentUser.id)
+      ))
       .catch(err => console.log(err))
   }
 
