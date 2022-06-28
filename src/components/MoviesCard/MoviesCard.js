@@ -48,7 +48,7 @@ function MoviesCard({ movieData, id, image, nameRU, duration }) {
           setIsSaved(true);
           setMainApiId(movie._id);
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err))
     }
   };
 

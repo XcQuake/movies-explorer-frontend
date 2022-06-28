@@ -79,17 +79,17 @@ export const saveMovie = (movie) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify ({
-      country: movie.country,
-      director: movie.director,
-      duration: movie.duration,
-      year: movie.year,
-      description: movie.description,
+      country: movie.country || 'unknown',
+      director: movie.director || 'unknown',
+      duration: movie.duration || 60,
+      year: movie.year || 2000,
+      description: movie.description || 'unknown',
       image: `https://api.nomoreparties.co/${movie.image.url}`,
-      trailerLink: movie.trailerLink,
+      trailerLink: movie.trailerLink || 'unknown',
       thumbnail: `https://api.nomoreparties.co/${movie.image.url}`,
       movieId: movie.id,
-      nameRU: movie.nameRU,
-      nameEN: movie.nameEN,
+      nameRU: movie.nameRU || 'unknown',
+      nameEN: movie.nameEN || 'unknown',
     })
   })
   .then((res) => processResult(res))
