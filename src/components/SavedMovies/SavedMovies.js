@@ -14,11 +14,14 @@ function SavedMovies() {
   const movieCards = movies.map((movie) => {
     return <MoviesCard
       key={movie.movieId}
-      id={movie.movieId}
       movieData={movie}
       image={movie.image}
       nameRU={movie.nameRU}
       duration={movie.duration}
+      saveStatus={{
+        isSaved: true,
+        id: movie._id
+      }}
     />
   });
 

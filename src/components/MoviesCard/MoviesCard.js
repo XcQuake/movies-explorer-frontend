@@ -1,29 +1,20 @@
 import './MoviesCard.css';
-import React, { useState, useContext, useEffect, useCallback }  from 'react';
+import React, { useState, useContext, useEffect }  from 'react';
 import SaveButton from '../Buttons/SaveButton/SaveButton';
 import { saveMovie, deleteMovie } from '../../utils/MainApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function MoviesCard({ movieData, id, image, nameRU, duration }) {
+function MoviesCard({ movieData, id, image, nameRU, duration, saveStatus}) {
   const userContext = useContext(CurrentUserContext);
-  const user = userContext.userData;
   const savedMovies = userContext.savedMovies;
   const setSavedMovies = userContext.setSavedMovies;
-  const [isSaved, setIsSaved] = useState(false);
+  const [isSaved, setIsSaved] = useState(null);
   const [mainApiId, setMainApiId] = useState('');
 
-  const checkIsSaved = useCallback(() => {
-    savedMovies.some((movie) => {
-      if (movie.movieId === id && movie.owner === user.id) {
-        setIsSaved(true);
-        setMainApiId(movie._id);
-      }
-    })
-  }, [id, user]);
-
   useEffect(() => {
-    checkIsSaved();
-  }, [checkIsSaved]);
+    setIsSaved(saveStatus.isSaved);
+    setMainApiId(saveStatus.id);
+  }, [saveStatus]);
 
   function getReadableDuration() {
     const hours = Math.floor(duration / 60);
@@ -31,30 +22,33 @@ function MoviesCard({ movieData, id, image, nameRU, duration }) {
     return `${hours}ч ${minutes}м`;
   };
 
-  function handleClickSaveMovie() {
-    if (isSaved) {
-      deleteMovie(mainApiId)
-        .then(() => {
-          setSavedMovies(savedMovies.filter((movie) => {
-            return !(movie._id === mainApiId);
-          }));
-          setIsSaved(false);
-        })
-        .catch((err) => console.log(err))
-    } else {
-      saveMovie(movieData)
-        .then((movie) => {
-          setSavedMovies([...savedMovies, movie]);
-          setIsSaved(true);
-          setMainApiId(movie._id);
-        })
-        .catch((err) => console.log(err))
-    }
+  function handleSaveMovie() {
+    saveMovie(movieData)
+      .then((movie) => {
+        setSavedMovies([...savedMovies, movie]);
+        setIsSaved(true);
+        setMainApiId(movie._id);
+      })
+      .catch((err) => console.log(err))
+  };
+
+  function handleDeleteMovie() {
+    deleteMovie(mainApiId)
+      .then(() => {
+        setSavedMovies(savedMovies.filter((movie) => {
+          return !(movie._id === mainApiId);
+        }));
+        setIsSaved(false);
+      })
+      .catch((err) => console.log(err))
   };
 
   return (
     <li className='movies-card'>
-      <SaveButton onClick={handleClickSaveMovie} isMovieSaved={isSaved}/>
+      <SaveButton
+        onClick={isSaved ? handleDeleteMovie : handleSaveMovie}
+        isMovieSaved={isSaved}
+      />
       <img className='movies-card__image' src={image} alt={nameRU} />
       <div className='movies-card__description'>
         <h3 className='movies-card__title'>{nameRU}</h3>

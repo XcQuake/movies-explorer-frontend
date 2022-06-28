@@ -2,14 +2,17 @@ import './Movies.css';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import MoreButton from '../Buttons/MoreButton/MoreButton';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function Movies({searchedMovies}) {
   const [movies, setMovies] = useState([]);
   const [width, setWidth] = useState(window.innerWidth);
-
   const [countOfCards, setCountOfCards] = useState(5);
   const [isMoreMovies, setIsMoreMovies] = useState(true);
+
+  const userContext = useContext(CurrentUserContext);
+  const savedMovies = userContext.savedMovies;
 
   const handleResizeWindow = () => {
     setWidth(window.innerWidth)
@@ -25,6 +28,7 @@ function Movies({searchedMovies}) {
   }, [searchedMovies])
 
   // Добавляет слушатель изменения ширины экрана
+  // и достаёт найденные фильмы из localStorage
   useEffect(() => {
     const localMovies = JSON.parse(localStorage.getItem('movies'));
     localMovies && setMovies(localMovies);
@@ -71,15 +75,30 @@ function Movies({searchedMovies}) {
     }
   };
 
+  const checkIsSaved = (movie) => {
+    const savedMovie = savedMovies.find(item => item.movieId === movie.id)
+    if (savedMovie) {
+      return {
+        isSaved: true,
+        id: savedMovie._id,
+      }
+    } else {
+      return {
+        isSaved: false,
+        id: '',
+      }
+    }
+  };
+
   const countedMovies = movies.slice(0, countOfCards);
   const movieCards = countedMovies.map((movie) => (
       <MoviesCard
         key={movie.id}
         movieData={movie}
-        id={movie.id}
         image={`https://api.nomoreparties.co/${movie.image.url}`}
         nameRU={movie.nameRU}
         duration={movie.duration}
+        saveStatus={checkIsSaved(movie)}
       />
     )
   );
