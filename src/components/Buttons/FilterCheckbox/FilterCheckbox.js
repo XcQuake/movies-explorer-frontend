@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import './FilterCheckbox.css';
 
 function FilterCheckbox({onChange}) {
+  const currentLocation = useLocation().pathname;
   const [isChecked, setIsChecked] = useState(false);
 
   const handleChange = () => {
@@ -10,9 +12,13 @@ function FilterCheckbox({onChange}) {
   };
 
   useEffect(() => {
-    const storageCheckboxState = JSON.parse(localStorage.getItem('isShortFilms'));
-    storageCheckboxState && setIsChecked(storageCheckboxState);
-  }, [])
+    if (currentLocation === '/movies') {
+      const storageCheckboxState = JSON.parse(localStorage.getItem('isShortMovies'));
+      storageCheckboxState && setIsChecked(storageCheckboxState);
+    } else {
+      setIsChecked(false);
+    }
+  }, []);
 
   return (
     <form className='filter-checkbox'>
@@ -29,7 +35,7 @@ function FilterCheckbox({onChange}) {
         Короткометражки
       </label>
     </form>
-  )
+  );
 }
 
 export default FilterCheckbox;

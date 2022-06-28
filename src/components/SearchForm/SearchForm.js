@@ -1,8 +1,9 @@
 import './SearchForm.css';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
-function SearchForm({onSubmit, onXryak, children}) {
+function SearchForm({onSubmit, children}) {
+  const currentLocation = useLocation().pathname;
   const [keyWord, setKeyWord] = useState('');
   const handleInput = (evt) => {
     setKeyWord(evt.target.value);
@@ -13,9 +14,13 @@ function SearchForm({onSubmit, onXryak, children}) {
   };
 
   useEffect(() => {
-    const storageKeyWord = localStorage.getItem('keyWord');
-    storageKeyWord && setKeyWord(storageKeyWord);
-  }, [])
+    if (currentLocation === '/movies') {
+      const storageKeyWord = localStorage.getItem('keyWord');
+      storageKeyWord && setKeyWord(storageKeyWord);
+    } else {
+      setKeyWord('');
+    }
+  }, [currentLocation])
 
   return (
     <section className='search-form'>

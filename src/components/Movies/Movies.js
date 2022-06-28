@@ -1,57 +1,82 @@
 import './Movies.css';
+import { useState, useEffect, useContext } from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import MoreButton from '../Buttons/MoreButton/MoreButton';
-import { useState, useEffect, useContext } from 'react';
-import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import SearchForm from '../SearchForm/SearchForm';
+import FilterCheckbox from '../Buttons/FilterCheckbox/FilterCheckbox';
+import { BREAKPOINTS } from '../../utils/constants';
+import { filterMovies } from '../../utils/utils';
 
-function Movies({searchedMovies}) {
+function Movies() {
   const [movies, setMovies] = useState([]);
   const [width, setWidth] = useState(window.innerWidth);
   const [countOfCards, setCountOfCards] = useState(5);
   const [isMoreMovies, setIsMoreMovies] = useState(true);
+  const [searchProps, setSearchProps] = useState({
+    keyWord: '',
+    isShortMovies: false,
+  });
+  const [keyWord, setKeyWord] = useState('');
+  const [isShortMovies, setIsShortMovies] = useState(false);
 
   const userContext = useContext(CurrentUserContext);
   const savedMovies = userContext.savedMovies;
+  const allMovies = JSON.parse(localStorage.getItem('allMovies'));
 
   const handleResizeWindow = () => {
     setWidth(window.innerWidth)
   };
 
-  const breakPoints = {
-    tablet: 535,
-    desktop: 870,
-  };
-
-  useEffect(() => {
-    setMovies(searchedMovies);
-  }, [searchedMovies])
-
   // Добавляет слушатель изменения ширины экрана
   // и достаёт найденные фильмы из localStorage
   useEffect(() => {
-    const localMovies = JSON.parse(localStorage.getItem('movies'));
-    localMovies && setMovies(localMovies);
+    const storageMovies = JSON.parse(localStorage.getItem('searchedMovies'));
+    const storageKeyWord = localStorage.getItem('keyWord');
+    const storageIsShortMovies = JSON.parse(localStorage.getItem('isShortMovies'));
+    storageMovies && setMovies(storageMovies);
+    storageKeyWord && setKeyWord(storageKeyWord);
+    storageIsShortMovies && setIsShortMovies(storageIsShortMovies);
+
     window.addEventListener("resize", handleResizeWindow);
     return () => {
       window.removeEventListener("resize", handleResizeWindow);
     };
   }, []);
 
+  const handleSetFilteredMovies = (keyWord, isShortMovies) => {
+    const filteredMovies = filterMovies(allMovies, keyWord, isShortMovies);
+    localStorage.setItem('searchedMovies', JSON.stringify(filteredMovies));
+    setMovies(filteredMovies)
+  }
+
+  const handleSearchSubmit = (keyWord) => {
+    setKeyWord(keyWord);
+    localStorage.setItem('keyWord', keyWord);
+    handleSetFilteredMovies(keyWord, isShortMovies);
+  };
+
+  const handleChangeCheckbox = (isChecked) => {
+    setIsShortMovies(isChecked);
+    localStorage.setItem('isShortMovies', isChecked);
+    handleSetFilteredMovies(keyWord, isChecked);
+  }
+
   // Устанавливает количество карточек в зависимости от ширины экрана
   useEffect(() => {
-    if (width < breakPoints.tablet) {
+    if (width < BREAKPOINTS.tablet) {
       return setCountOfCards(5);
     };
 
-    if (width >= breakPoints.tablet &&  width < breakPoints.desktop) {
+    if (width >= BREAKPOINTS.tablet &&  width < BREAKPOINTS.desktop) {
       return setCountOfCards(8);
     };
 
-    if (width >= breakPoints.desktop) {
+    if (width >= BREAKPOINTS.desktop) {
       return setCountOfCards(12);
     };
-  }, [width, breakPoints.tablet, breakPoints.desktop]);
+  }, [width, BREAKPOINTS]);
 
   // Устанавливает состояние кнопки "Ещё"
   useEffect(() => {
@@ -64,10 +89,10 @@ function Movies({searchedMovies}) {
 
   const handleMoreClick = () => {
     if (countOfCards < movies.length) {
-      if (width < breakPoints.desktop) {
+      if (width < BREAKPOINTS.desktop) {
         return setCountOfCards(countOfCards + 2);
       };
-      if (width >= breakPoints.desktop) {
+      if (width >= BREAKPOINTS.desktop) {
         return setCountOfCards(countOfCards + 3);
       };
     } else {
@@ -104,16 +129,23 @@ function Movies({searchedMovies}) {
   );
 
   return (
-    <div className='movies'>
-      <div className='movies__wrapper'>
-        <MoviesCardList>
-          { movieCards }
-        </MoviesCardList>
-        {
-          isMoreMovies && <MoreButton onClick={handleMoreClick}/>
-        }
+    <>
+      <SearchForm onSubmit={handleSearchSubmit}>
+        <FilterCheckbox
+          onChange={handleChangeCheckbox}
+        />
+      </SearchForm>
+      <div className='movies'>
+        <div className='movies__wrapper'>
+          <MoviesCardList>
+            { movieCards }
+          </MoviesCardList>
+          {
+            isMoreMovies && <MoreButton onClick={handleMoreClick}/>
+          }
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 

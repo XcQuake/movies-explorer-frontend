@@ -3,13 +3,12 @@ import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import * as MainApi from '../../utils/MainApi';
-import * as MoviesApi from '../../utils/MoviesApi';
+import { getAllMovies } from '../../utils/MoviesApi';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import Footer from '../Footer/Footer';
 import SavedMovies from '../SavedMovies/SavedMovies';
-import SearchForm from '../SearchForm/SearchForm';
 import Profile from '../Profile/Profile';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
@@ -17,18 +16,11 @@ import Navigation from '../Navigation/Navigation';
 import NotFound from '../NotFound/NotFound';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Popup from '../Popup/Popup';
-import MoviesFilter from '../../utils/MoviesFilter';
-import FilterCheckbox from '../Buttons/FilterCheckbox/FilterCheckbox';
 
 export default function App() {
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(undefined);
   const [mainApiError, setMainApiError] = useState('');
-  const [searchProps, setSearchProps] = useState({
-    keyWord: '',
-    isShortFilms: false,
-  });
-  const [searchedMovies, setSearchedMovies] = useState([]);
   const [currentUser, setCurrentUser] = useState({
     username: '',
     email: '',
@@ -45,57 +37,25 @@ export default function App() {
 // Функции инициализации
   useEffect(() => {
     handleCheckToken();
-  }, []);
-
-  useEffect(() => {
-    setSearchProps({
-      keyWord: localStorage.getItem('keyWord'),
-      isShortFilms: JSON.parse(localStorage.getItem('isShortFilms')),
-    });
-  }, []);
-
-// Функции Movies
-  function handleChangeFilterCheckbox(isChecked) {
-    localStorage.setItem('isShortFilms', isChecked);
-    const localMovies = JSON.parse(localStorage.getItem('movies'));
-    // перефильтровать только если уже был выполнен поиск фильмов
-    if (localMovies && localMovies.length !== 0) {
-      handleSearchMovies();
+    if (isLoggedIn) {
+      getAllMovies()
+        .then((movies) => {
+          localStorage.setItem('allMovies', JSON.stringify(movies));
+        })
+        .catch((err) => console.log(err))
     }
-  };
+  }, [isLoggedIn]);
 
-  function handleSearchSubmit(keyWord) {
-    localStorage.setItem('keyWord', keyWord);
-    handleSearchMovies();
-  };
-
-  const moviesFilter = new MoviesFilter(40);
-  function promiseFilterMovies(movies, keyWord) {
-    return new Promise((resolve) => {
-      const filteredMovies = moviesFilter.filterByName(movies, keyWord);
-      resolve(filteredMovies);
-    })
-  };
-
-  function handleSearchMovies() {
-    const keyWord = localStorage.getItem('keyWord');
-    const isShortFilms = JSON.parse(localStorage.getItem('isShortFilms'));
-    MoviesApi.getMovies()
-      .then((movies) => {
-        promiseFilterMovies(movies, keyWord)
-          .then((filteredMovies) => {
-            if (isShortFilms) { // Короткометражки
-              const shortFilms = moviesFilter.filterByDuration(filteredMovies);
-              localStorage.setItem('movies', JSON.stringify(shortFilms));
-              setSearchedMovies(shortFilms);
-            } else { // Полнометражки
-              localStorage.setItem('movies', JSON.stringify(filteredMovies));
-              setSearchedMovies(filteredMovies)
-            }
-          })
-      })
-  };
-
+  // сохраняет в стейт все фильмы, сохранённые текущим пользователем
+  useEffect(() => {
+    if (isLoggedIn) {
+      MainApi.getSavedMovies()
+      .then(movies =>  setSavedMovies(
+        movies.filter(movie => movie.owner === currentUser.id)
+      ))
+      .catch(err => console.log(err))
+    }
+  }, [isLoggedIn])
 
 // Функции аутентификации
   const handleSignIn = (email, password) => {
@@ -118,14 +78,6 @@ export default function App() {
       .catch((err) => setMainApiError(err))
   };
 
-  const getSavedMovies = () => {
-    MainApi.getSavedMovies()
-      .then(movies => setSavedMovies(
-        movies.filter(movie => movie.owner = currentUser.id)
-      ))
-      .catch(err => console.log(err))
-  }
-
   const handleCheckToken = () => {
     if (localStorage.getItem('isTokenExist')){
       MainApi.checkToken()
@@ -137,9 +89,6 @@ export default function App() {
           });
           setIsLoggedIn(true);
         })
-        .then(
-          getSavedMovies()
-        )
         .catch((err) => {
           setIsLoggedIn(false);
         })
@@ -193,22 +142,10 @@ export default function App() {
           >
             <Switch>
               <Route path='/movies'>
-                <SearchForm onSubmit={handleSearchSubmit}>
-                  <FilterCheckbox
-                    isChecked={searchProps.isShortFilms}
-                    onChange={handleChangeFilterCheckbox}
-                  />
-                </SearchForm>
-                <Movies searchedMovies={searchedMovies}/>
+                <Movies />
               </Route>
               <Route path='/saved-movies'>
-                <SearchForm>
-                  <FilterCheckbox
-                    isChecked={searchProps.isShortFilms}
-                    onChange={handleChangeFilterCheckbox}
-                  />
-                </SearchForm>
-                <SavedMovies movies={savedMovies} />
+                <SavedMovies />
               </Route>
               <Route path='/profile'>
                 <Profile onSuccesChange={handleOpenPopup} />

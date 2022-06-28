@@ -1,15 +1,24 @@
 import './SavedMovies.css';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import MoviesCard from '../MoviesCard/MoviesCard';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import SearchForm from '../SearchForm/SearchForm';
+import FilterCheckbox from '../Buttons/FilterCheckbox/FilterCheckbox';
+import { filterMovies } from '../../utils/utils';
 
 function SavedMovies() {
   const userContext = useContext(CurrentUserContext);
   const savedMovies = userContext.savedMovies;
   const [movies, setMovies] = useState([]);
+  const [searchProps, setSearchProps] = useState({
+    keyWord: '',
+    isShortMovies: false,
+  });
+
+  useEffect(() => {
+    setMovies(savedMovies);
+  }, [savedMovies]);
 
   const movieCards = movies.map((movie) => {
     return <MoviesCard
@@ -25,18 +34,36 @@ function SavedMovies() {
     />
   });
 
-  useEffect(() => {
-    setMovies(savedMovies);
-  }, [savedMovies])
+  const handleSetFilteredMovies = (keyWord, isShortMovies) => {
+    const filteredMovies = filterMovies(savedMovies, keyWord, isShortMovies);
+    setMovies(filteredMovies)
+  }
+
+  const handleSubmitSearch = (keyWord) => {
+    setSearchProps({...searchProps, keyWord: keyWord});
+    handleSetFilteredMovies(keyWord, searchProps.isShortMovies);
+  };
+
+  const handleChangeCheckbox = (isChecked) => {
+    setSearchProps({...searchProps, isShortMovies: isChecked});
+    handleSetFilteredMovies(searchProps.keyWord, isChecked);
+  }
 
   return (
-    <div className='saved-movies'>
-      <div className='saved-movies__wrapper'>
-        <MoviesCardList>
-          {movieCards}
-        </MoviesCardList>
+    <>
+      <SearchForm onSubmit={handleSubmitSearch} >
+        <FilterCheckbox
+          onChange={handleChangeCheckbox}
+        />
+      </SearchForm>
+      <div className='saved-movies'>
+        <div className='saved-movies__wrapper'>
+          <MoviesCardList>
+            {movieCards}
+          </MoviesCardList>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
