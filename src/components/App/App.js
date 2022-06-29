@@ -52,12 +52,12 @@ export default function App() {
   useEffect(() => {
     if (isLoggedIn) {
       MainApi.getSavedMovies()
-      .then(movies =>  setSavedMovies(
+      .then(movies => setSavedMovies(
         movies.filter(movie => movie.owner === currentUser.id)
       ))
       .catch(() => handleOpenPopup(POPUP_MESSAGES.savedMovies.error))
     }
-  }, [isLoggedIn])
+  }, [isLoggedIn, currentUser])
 
 // Функции аутентификации
   const handleSignIn = (email, password) => {
