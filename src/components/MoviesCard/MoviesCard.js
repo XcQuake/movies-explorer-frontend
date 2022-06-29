@@ -4,11 +4,16 @@ import SaveButton from '../Buttons/SaveButton/SaveButton';
 import { saveMovie, deleteMovie } from '../../utils/MainApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function MoviesCard({ movieData, id, image, nameRU, duration, saveStatus}) {
+function MoviesCard({ movieData, saveStatus}) {
   const userContext = useContext(CurrentUserContext);
   const savedMovies = userContext.savedMovies;
   const setSavedMovies = userContext.setSavedMovies;
-  const [isSaved, setIsSaved] = useState(null);
+  const {
+    image,
+    nameRU,
+    duration
+  } = movieData;
+  const [isSaved, setIsSaved] = useState(false);
   const [mainApiId, setMainApiId] = useState('');
 
   useEffect(() => {
@@ -27,7 +32,6 @@ function MoviesCard({ movieData, id, image, nameRU, duration, saveStatus}) {
       .then((movie) => {
         setSavedMovies([...savedMovies, movie]);
         setIsSaved(true);
-        setMainApiId(movie._id);
       })
       .catch((err) => console.log(err))
   };

@@ -21,20 +21,6 @@ function SavedMovies() {
     handleSetFilteredMovies(searchProps.keyWord, searchProps.isShortMovies)
   }, [savedMovies]);
 
-  const movieCards = movies.map((movie) => {
-    return <MoviesCard
-      key={movie.movieId}
-      movieData={movie}
-      image={movie.image}
-      nameRU={movie.nameRU}
-      duration={movie.duration}
-      saveStatus={{
-        isSaved: true,
-        id: movie._id
-      }}
-    />
-  });
-
   const handleSetFilteredMovies = (keyWord, isShortMovies) => {
     const filteredMovies = filterMovies(savedMovies, keyWord, isShortMovies);
     setMovies(filteredMovies)
@@ -59,9 +45,7 @@ function SavedMovies() {
       </SearchForm>
       <div className='saved-movies'>
         <div className='saved-movies__wrapper'>
-          <MoviesCardList>
-            {movieCards}
-          </MoviesCardList>
+          <MoviesCardList movies={movies} />
         </div>
       </div>
     </>

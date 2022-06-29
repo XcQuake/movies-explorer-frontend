@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api.xcqmovies.nomoredomains.xyz';
+import { BASE_URL } from './constants';
 
 async function processResult(res) {
   const result = await res.json();
@@ -78,19 +78,7 @@ export const saveMovie = (movie) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify ({
-      country: movie.country || 'unknown',
-      director: movie.director || 'unknown',
-      duration: movie.duration || 60,
-      year: movie.year || 2000,
-      description: movie.description || 'unknown',
-      image: `https://api.nomoreparties.co/${movie.image.url}`,
-      trailerLink: movie.trailerLink || 'unknown',
-      thumbnail: `https://api.nomoreparties.co/${movie.image.url}`,
-      movieId: movie.id,
-      nameRU: movie.nameRU || 'unknown',
-      nameEN: movie.nameEN || 'unknown',
-    })
+    body: JSON.stringify(movie)
   })
   .then((res) => processResult(res))
 };

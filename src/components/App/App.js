@@ -17,6 +17,7 @@ import NotFound from '../NotFound/NotFound';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Popup from '../Popup/Popup';
 import { POPUP_MESSAGES } from '../../utils/constants';
+import { transformMovies } from '../../utils/utils';
 
 export default function App() {
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
@@ -41,7 +42,8 @@ export default function App() {
     if (isLoggedIn) {
       getAllMovies()
         .then((movies) => {
-          localStorage.setItem('allMovies', JSON.stringify(movies));
+          const tranformedMovies = transformMovies(movies);
+          localStorage.setItem('allMovies', JSON.stringify(tranformedMovies));
         })
         .catch(() => handleOpenPopup(POPUP_MESSAGES.movies.error))
     }

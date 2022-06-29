@@ -1,4 +1,4 @@
-import { SHORTMOVIES_DURATION } from './constants';
+import { IMAGES_URL, SHORTMOVIES_DURATION } from './constants';
 
 export function filterMovies(movies, keyWord, isShortMovies) {
   const word = keyWord.toLowerCase().trim();
@@ -14,3 +14,26 @@ export function filterMovies(movies, keyWord, isShortMovies) {
     return searchedMovies
   };
 };
+
+export function transformMovies(movies) {
+  const changedMovies = [];
+
+  movies.map((movie) => {
+    const newMovie = {
+      country: movie.country || 'unknown',
+      director: movie.director || 'unknown',
+      duration: movie.duration || 60,
+      year: movie.year || 2000,
+      description: movie.description || 'unknown',
+      image: `${IMAGES_URL}${movie.image.url}`,
+      trailerLink: movie.trailerLink || 'unknown',
+      thumbnail: `${IMAGES_URL}${movie.image.url}`,
+      movieId: movie.id,
+      nameRU: movie.nameRU || 'unknown',
+      nameEN: movie.nameEN || 'unknown',
+    };
+    changedMovies.push(newMovie)
+  })
+
+  return changedMovies;
+}

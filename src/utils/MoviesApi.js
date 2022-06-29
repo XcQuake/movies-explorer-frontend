@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api.nomoreparties.co/beatfilm-movies';
+import { MOVIES_URL } from './constants';
 
 async function processResult(res) {
   const result = await res.json();
@@ -6,7 +6,7 @@ async function processResult(res) {
 };
 
 export const getAllMovies = () => {
-  return fetch(`${BASE_URL}`, {
+  return fetch(`${MOVIES_URL}`, {
     method: 'GET'
   })
   .then((res) => processResult(res))
