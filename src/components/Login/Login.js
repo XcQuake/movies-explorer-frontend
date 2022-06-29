@@ -56,7 +56,6 @@ function Login({onSubmit, apiError}) {
               className='authform__input'
               type='password'
               name='password'
-              minLength="6"
               maxLength="30"
               required
               value={values.password || ''}

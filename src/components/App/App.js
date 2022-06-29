@@ -32,11 +32,10 @@ export default function App() {
     isActive: false,
     message: '',
   });
-  // Состояния SavedMovies
   const [savedMovies, setSavedMovies] = useState([]);
   const history = useHistory();
 
-// Функции инициализации
+  // сохраняет все фильмы с BeatFilm в localStorage
   useEffect(() => {
     handleCheckToken();
     if (isLoggedIn) {
@@ -81,6 +80,19 @@ export default function App() {
       .catch((err) => setMainApiError(err))
   };
 
+  const handleSignOut = (evt) => {
+    evt.preventDefault();
+    localStorage.removeItem('isTokenExist');
+    localStorage.removeItem('allMovies');
+    localStorage.removeItem('searchedMovies');
+    localStorage.removeItem('keyWord');
+    localStorage.removeItem('isShortMovies');
+    setIsLoggedIn(false);
+    setCurrentUser({});
+    MainApi.signOut()
+      .catch((err) => console.log(err))
+  };
+
   const handleCheckToken = () => {
     if (localStorage.getItem('isTokenExist')){
       MainApi.checkToken()
@@ -92,7 +104,7 @@ export default function App() {
           });
           setIsLoggedIn(true);
         })
-        .catch((err) => {
+        .catch(() => {
           setIsLoggedIn(false);
         })
     } else setIsLoggedIn(false);
@@ -159,7 +171,7 @@ export default function App() {
                 <SavedMovies />
               </Route>
               <Route path='/profile'>
-                <Profile onSuccesChange={handleOpenPopup} />
+                <Profile onSuccesChange={handleOpenPopup} onSignOut={handleSignOut}/>
               </Route>
               <Route path='/404' component={NotFound} />
               <Redirect to='/404' />

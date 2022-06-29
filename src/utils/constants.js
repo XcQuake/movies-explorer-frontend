@@ -34,7 +34,7 @@ const POPUP_MESSAGES = {
   },
   profile: {
     success: 'Данные аккаунта успешно изменены!',
-  }
+  },
 };
 
 const CUSTOM_VALIDATION = {

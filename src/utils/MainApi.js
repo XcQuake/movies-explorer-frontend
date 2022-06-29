@@ -39,7 +39,7 @@ export const signIn = (email, password) => {
 export const signOut = () => {
   return fetch(`${BASE_URL}/signout`, {
     credentials: 'include',
-    method: 'GET'
+    method: 'POST'
   })
   .then((res) => processResult(res))
 };

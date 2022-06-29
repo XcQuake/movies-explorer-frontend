@@ -5,7 +5,7 @@ import { useFormWithValidation } from '../../hooks/useFormWithValidation';
 import './Profile.css';
 import { CUSTOM_VALIDATION, POPUP_MESSAGES } from '../../utils/constants';
 
-function Profile({onSuccesChange}) {
+function Profile({onSuccesChange, onSignOut}) {
   const userContext = useContext(CurrentUserContext);
   const [userData, setUserData] = useState(userContext.userData);
   const initialValues = {
@@ -109,7 +109,7 @@ function Profile({onSuccesChange}) {
                   </button>
                 : <button className='profile__button' onClick={handleEdit}>Редактировать</button>
             }
-            { !isEdit && <button className='profile__button profile__button_exit'>Выйти из аккаунта</button> }
+            { !isEdit && <button className='profile__button profile__button_exit' onClick={onSignOut}>Выйти из аккаунта</button> }
           </div>
         </form>
       </div>
