@@ -13,7 +13,7 @@ function Popup({isActive, setState, message}) {
     if (isActive) {
       setTimeout(() => {
         handleClose();
-      }, 3000)
+      }, 5000)
     }}, [isActive, handleClose]
   );
 

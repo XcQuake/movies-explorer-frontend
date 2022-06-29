@@ -16,6 +16,7 @@ import Navigation from '../Navigation/Navigation';
 import NotFound from '../NotFound/NotFound';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Popup from '../Popup/Popup';
+import { POPUP_MESSAGES } from '../../utils/constants';
 
 export default function App() {
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
@@ -42,7 +43,7 @@ export default function App() {
         .then((movies) => {
           localStorage.setItem('allMovies', JSON.stringify(movies));
         })
-        .catch((err) => console.log(err))
+        .catch(() => handleOpenPopup(POPUP_MESSAGES.movies.error))
     }
   }, [isLoggedIn]);
 
@@ -53,7 +54,7 @@ export default function App() {
       .then(movies =>  setSavedMovies(
         movies.filter(movie => movie.owner === currentUser.id)
       ))
-      .catch(err => console.log(err))
+      .catch(() => handleOpenPopup(POPUP_MESSAGES.savedMovies.error))
     }
   }, [isLoggedIn])
 
@@ -142,7 +143,7 @@ export default function App() {
           >
             <Switch>
               <Route path='/movies'>
-                <Movies />
+                <Movies onError={handleOpenPopup} />
               </Route>
               <Route path='/saved-movies'>
                 <SavedMovies />

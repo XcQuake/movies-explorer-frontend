@@ -1,20 +1,19 @@
 import './Movies.css';
 import { useState, useEffect, useContext } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { BREAKPOINTS, POPUP_MESSAGES } from '../../utils/constants';
+import { filterMovies } from '../../utils/utils';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import MoreButton from '../Buttons/MoreButton/MoreButton';
 import SearchForm from '../SearchForm/SearchForm';
 import FilterCheckbox from '../Buttons/FilterCheckbox/FilterCheckbox';
-import { BREAKPOINTS } from '../../utils/constants';
-import { filterMovies } from '../../utils/utils';
 import Preloader from '../Preloader/Preloader';
-import { getAllMovies } from '../../utils/MoviesApi';
 
-function Movies() {
+function Movies({onError}) {
   const [movies, setMovies] = useState([]);
   const [width, setWidth] = useState(window.innerWidth);
-  const [countOfCards, setCountOfCards] = useState(5);
+  const [countOfCards, setCountOfCards] = useState(0);
   const [isMoreMovies, setIsMoreMovies] = useState(true);
   const [keyWord, setKeyWord] = useState('');
   const [isShortMovies, setIsShortMovies] = useState(false);
@@ -28,7 +27,6 @@ function Movies() {
   const handleResizeWindow = () => {
     setWidth(window.innerWidth)
   };
-
 
   // достаёт данные из localStorage
   useEffect(() => {
@@ -71,7 +69,7 @@ function Movies() {
     localStorage.setItem('keyWord', keyWord);
     getFilteredMovies(keyWord, isShortMovies)
       .then((movies) => handleSetMovies(movies))
-      .catch((err) => console.log(err))
+      .catch(() => onError(POPUP_MESSAGES.movies.error))
       .finally(() => setIsDataLoading(false))
   };
 
@@ -81,7 +79,7 @@ function Movies() {
     localStorage.setItem('isShortMovies', isChecked);
     getFilteredMovies(keyWord, isChecked)
       .then((movies) => handleSetMovies(movies))
-      .catch((err) => console.log(err))
+      .catch(() => onError(POPUP_MESSAGES.movies.error))
       .finally(() => setIsDataLoading(false))
   };
 

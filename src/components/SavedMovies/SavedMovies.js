@@ -18,6 +18,7 @@ function SavedMovies() {
 
   useEffect(() => {
     setMovies(savedMovies);
+    handleSetFilteredMovies(searchProps.keyWord, searchProps.isShortMovies)
   }, [savedMovies]);
 
   const movieCards = movies.map((movie) => {
@@ -37,7 +38,7 @@ function SavedMovies() {
   const handleSetFilteredMovies = (keyWord, isShortMovies) => {
     const filteredMovies = filterMovies(savedMovies, keyWord, isShortMovies);
     setMovies(filteredMovies)
-  }
+  };
 
   const handleSubmitSearch = (keyWord) => {
     setSearchProps({...searchProps, keyWord: keyWord});
@@ -47,7 +48,7 @@ function SavedMovies() {
   const handleChangeCheckbox = (isChecked) => {
     setSearchProps({...searchProps, isShortMovies: isChecked});
     handleSetFilteredMovies(searchProps.keyWord, isChecked);
-  }
+  };
 
   return (
     <>
