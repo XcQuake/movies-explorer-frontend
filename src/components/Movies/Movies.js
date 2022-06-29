@@ -8,18 +8,18 @@ import SearchForm from '../SearchForm/SearchForm';
 import FilterCheckbox from '../Buttons/FilterCheckbox/FilterCheckbox';
 import { BREAKPOINTS } from '../../utils/constants';
 import { filterMovies } from '../../utils/utils';
+import Preloader from '../Preloader/Preloader';
+import { getAllMovies } from '../../utils/MoviesApi';
 
 function Movies() {
   const [movies, setMovies] = useState([]);
   const [width, setWidth] = useState(window.innerWidth);
   const [countOfCards, setCountOfCards] = useState(5);
   const [isMoreMovies, setIsMoreMovies] = useState(true);
-  const [searchProps, setSearchProps] = useState({
-    keyWord: '',
-    isShortMovies: false,
-  });
   const [keyWord, setKeyWord] = useState('');
   const [isShortMovies, setIsShortMovies] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(false);
+  const [isNothingFound, setIsNothingFound] = useState(false);
 
   const userContext = useContext(CurrentUserContext);
   const savedMovies = userContext.savedMovies;
@@ -29,39 +29,61 @@ function Movies() {
     setWidth(window.innerWidth)
   };
 
-  // Добавляет слушатель изменения ширины экрана
-  // и достаёт найденные фильмы из localStorage
+
+  // достаёт данные из localStorage
   useEffect(() => {
     const storageMovies = JSON.parse(localStorage.getItem('searchedMovies'));
     const storageKeyWord = localStorage.getItem('keyWord');
     const storageIsShortMovies = JSON.parse(localStorage.getItem('isShortMovies'));
-    storageMovies && setMovies(storageMovies);
+    storageMovies && (
+      storageMovies.length === 0
+      ? setIsNothingFound(true)
+      : setMovies(storageMovies)
+    );
     storageKeyWord && setKeyWord(storageKeyWord);
     storageIsShortMovies && setIsShortMovies(storageIsShortMovies);
+  }, []);
 
+  // Добавляет слушатель изменения ширины экрана
+  useEffect(() => {
     window.addEventListener("resize", handleResizeWindow);
     return () => {
       window.removeEventListener("resize", handleResizeWindow);
     };
-  }, []);
+  }, [])
 
-  const handleSetFilteredMovies = (keyWord, isShortMovies) => {
-    const filteredMovies = filterMovies(allMovies, keyWord, isShortMovies);
-    localStorage.setItem('searchedMovies', JSON.stringify(filteredMovies));
-    setMovies(filteredMovies)
-  }
+  function getFilteredMovies(keyWord, isShortMovies) {
+    return new Promise((resolve) => {
+      const filteredMovies = filterMovies(allMovies, keyWord, isShortMovies);
+      resolve(filteredMovies);
+    })
+  };
+
+  const handleSetMovies = (movies) => {
+    movies.length === 0 ? setIsNothingFound(true) : setIsNothingFound(false);
+    setMovies(movies);
+    localStorage.setItem('searchedMovies', JSON.stringify(movies));
+  };
 
   const handleSearchSubmit = (keyWord) => {
+    setIsDataLoading(true);
     setKeyWord(keyWord);
     localStorage.setItem('keyWord', keyWord);
-    handleSetFilteredMovies(keyWord, isShortMovies);
+    getFilteredMovies(keyWord, isShortMovies)
+      .then((movies) => handleSetMovies(movies))
+      .catch((err) => console.log(err))
+      .finally(() => setIsDataLoading(false))
   };
 
   const handleChangeCheckbox = (isChecked) => {
+    setIsDataLoading(true);
     setIsShortMovies(isChecked);
     localStorage.setItem('isShortMovies', isChecked);
-    handleSetFilteredMovies(keyWord, isChecked);
-  }
+    getFilteredMovies(keyWord, isChecked)
+      .then((movies) => handleSetMovies(movies))
+      .catch((err) => console.log(err))
+      .finally(() => setIsDataLoading(false))
+  };
 
   // Устанавливает количество карточек в зависимости от ширины экрана
   useEffect(() => {
@@ -76,7 +98,7 @@ function Movies() {
     if (width >= BREAKPOINTS.desktop) {
       return setCountOfCards(12);
     };
-  }, [width, BREAKPOINTS]);
+  }, [width]);
 
   // Устанавливает состояние кнопки "Ещё"
   useEffect(() => {
@@ -85,7 +107,7 @@ function Movies() {
     } else {
       setIsMoreMovies(true);
     }
-  }, [countOfCards, movies])
+  }, [countOfCards, movies]);
 
   const handleMoreClick = () => {
     if (countOfCards < movies.length) {
@@ -128,6 +150,23 @@ function Movies() {
     )
   );
 
+  const displayedContent = () => {
+    return (
+      <>
+        {
+          isDataLoading
+          ? <Preloader />
+          : isNothingFound
+          ? <p className='movies__not-found'>Ничего не найдено</p>
+          : <MoviesCardList>
+              { movieCards }
+            </MoviesCardList>
+        }
+        { isMoreMovies && <MoreButton onClick={handleMoreClick}/> }
+      </>
+    )
+  };
+
   return (
     <>
       <SearchForm onSubmit={handleSearchSubmit}>
@@ -137,16 +176,11 @@ function Movies() {
       </SearchForm>
       <div className='movies'>
         <div className='movies__wrapper'>
-          <MoviesCardList>
-            { movieCards }
-          </MoviesCardList>
-          {
-            isMoreMovies && <MoreButton onClick={handleMoreClick}/>
-          }
+          { displayedContent() }
         </div>
       </div>
     </>
-  )
+  );
 }
 
 export default Movies;
