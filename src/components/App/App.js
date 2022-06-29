@@ -21,7 +21,7 @@ import { transformMovies } from '../../utils/utils';
 
 export default function App() {
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(undefined);
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [mainApiError, setMainApiError] = useState('');
   const [currentUser, setCurrentUser] = useState({
     username: '',

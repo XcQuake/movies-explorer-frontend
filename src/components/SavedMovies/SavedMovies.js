@@ -1,6 +1,5 @@
 import './SavedMovies.css';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import MoviesCard from '../MoviesCard/MoviesCard';
 import { useContext, useState, useEffect } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import SearchForm from '../SearchForm/SearchForm';

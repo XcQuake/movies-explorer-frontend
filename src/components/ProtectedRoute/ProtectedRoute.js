@@ -3,7 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 import Preloader from '../Preloader/Preloader';
 
 const ProtectedRoute = ({ isLoggedIn, children }) => {
-  if (isLoggedIn === undefined) {
+  if (isLoggedIn === null) {
     return <Preloader />
   }
 
