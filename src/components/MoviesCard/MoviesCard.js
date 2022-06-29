@@ -11,7 +11,8 @@ function MoviesCard({ movieData, saveStatus}) {
   const {
     image,
     nameRU,
-    duration
+    duration,
+    trailerLink
   } = movieData;
   const [isSaved, setIsSaved] = useState(false);
   const [mainApiId, setMainApiId] = useState('');
@@ -53,7 +54,9 @@ function MoviesCard({ movieData, saveStatus}) {
         onClick={isSaved ? handleDeleteMovie : handleSaveMovie}
         isMovieSaved={isSaved}
       />
-      <img className='movies-card__image' src={image} alt={nameRU} />
+      <a href={trailerLink} target='_blank' rel='noreferrer'>
+        <img className='movies-card__image' src={image} alt={nameRU} />
+      </a>
       <div className='movies-card__description'>
         <h3 className='movies-card__title'>{nameRU}</h3>
         <p className='movies-card__duration'>{getReadableDuration()}</p>

@@ -26,7 +26,7 @@ export function transformMovies(movies) {
       year: movie.year || 2000,
       description: movie.description || 'unknown',
       image: `${IMAGES_URL}${movie.image.url}`,
-      trailerLink: movie.trailerLink || 'unknown',
+      trailerLink: movie.trailerLink,
       thumbnail: `${IMAGES_URL}${movie.image.url}`,
       movieId: movie.id,
       nameRU: movie.nameRU || 'unknown',
