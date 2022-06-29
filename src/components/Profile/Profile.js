@@ -2,8 +2,8 @@ import { useContext, useRef, useState } from 'react';
 import * as auth from '../../utils/MainApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { useFormWithValidation } from '../../hooks/useFormWithValidation';
-import { validationConfig } from '../../utils/validationConfig';
 import './Profile.css';
+import { CUSTOM_VALIDATION, POPUP_MESSAGES } from '../../utils/constants';
 
 function Profile({onSuccesChange}) {
   const userContext = useContext(CurrentUserContext);
@@ -18,19 +18,22 @@ function Profile({onSuccesChange}) {
     handleChange,
     errors,
     isValid,
-  } = useFormWithValidation({validations: validationConfig, initialValues});
+    resetForm,
+  } = useFormWithValidation({initialValues});
   const nameInputRef = useRef(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isDataLoad, setIsDataLoad] = useState(false);
-  async function handleEdit() {
+
+  async function handleEdit(evt) {
+    evt.preventDefault();
     await setIsEdit(true);
     nameInputRef.current.focus();
   };
 
-  const isValuesChanged = JSON.stringify(values) !== JSON.stringify(userData);
-  const isButtonActive = isValuesChanged && isValid && !isDataLoad;
+  const isButtonActive = isValid && !isDataLoad;
 
-  async function handleSubmit() {
+  async function handleSubmit(evt) {
+    evt.preventDefault();
     setApiError('');
     setIsDataLoad(true);
     setUserData({
@@ -39,10 +42,14 @@ function Profile({onSuccesChange}) {
     });
 
     auth.updateProfile(values.username, values.email)
-      .then(() => {
+      .then((data) => {
         setApiError('');
         setIsEdit(false);
-        onSuccesChange('Данные аккаунта успешно изменены!')
+        onSuccesChange(POPUP_MESSAGES.profile.success);
+        resetForm({
+          username: data.name,
+          email: data.email,
+        })
       })
       .catch((err) => {
         setApiError(err);
@@ -65,6 +72,9 @@ function Profile({onSuccesChange}) {
                   value={values.username || ''}
                   onChange={handleChange}
                   ref={nameInputRef}
+                  minLength='2'
+                  maxLength='20'
+                  pattern={CUSTOM_VALIDATION.username.pattern}
                   disabled={isDataLoad || !isEdit}
                 />
               </label>
@@ -78,6 +88,9 @@ function Profile({onSuccesChange}) {
                   className='profile__input'
                   value={values.email || ''}
                   onChange={handleChange}
+                  minLength='5'
+                  maxLength='50'
+                  pattern={CUSTOM_VALIDATION.email.pattern}
                   disabled={isDataLoad || !isEdit}
                 />
               </label>

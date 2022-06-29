@@ -1,6 +1,6 @@
 import './AuthForm.css';
 
-function AuthForm({ onSubmit, error, children, config, isValid }) {
+function AuthForm({ onSubmit, error, children, buttonText, isValid }) {
   return (
     <form className='authform' onSubmit={onSubmit} noValidate>
       <fieldset className='authform__fieldset'>
@@ -14,12 +14,8 @@ function AuthForm({ onSubmit, error, children, config, isValid }) {
           aria-label='Авторизация'
           disabled={!isValid}
         >
-          {config.button}
+          {buttonText}
         </button>
-        <p className='authform__link-text'>
-          {config.linkText}
-          <a className='authform__link' href='/signin'>{config.link}</a>
-        </p>
       </div>
     </form>
   )

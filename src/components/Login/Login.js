@@ -1,19 +1,11 @@
+import { Link } from 'react-router-dom';
 import { useFormWithValidation } from '../../hooks/useFormWithValidation';
-import { validationConfig } from '../../utils/validationConfig';
+import { CUSTOM_VALIDATION } from '../../utils/constants';
 import AuthForm from '../AuthForm/AuthForm';
 import Logo from '../Logo/Logo';
 import './Login.css';
 
 function Login({onSubmit, apiError}) {
-  const initialValues = {
-    email: '',
-    password: '',
-  };
-  const initialErrors = {
-    email: '',
-    password: '',
-  };
-
   function submitHandler(evt) {
     evt.preventDefault()
     onSubmit(
@@ -22,22 +14,12 @@ function Login({onSubmit, apiError}) {
     );
   };
 
-  const textConfig = {
-    button: 'Войти',
-    linkText: 'Ещё не зарегистрированы?',
-    link: 'Регистрация',
-  };
-
   const {
     values,
     handleChange,
     errors,
     isValid,
-  } = useFormWithValidation({
-    validations: validationConfig,
-    initialValues,
-    initialErrors
-  });
+  } = useFormWithValidation();
 
   return (
     <main className='login'>
@@ -50,7 +32,7 @@ function Login({onSubmit, apiError}) {
           type={'login'}
           error={apiError}
           onSubmit={submitHandler}
-          config={textConfig}
+          buttonText={'Войти'}
           isValid={isValid}
         >
           <label className='authform__field'>
@@ -60,9 +42,10 @@ function Login({onSubmit, apiError}) {
               type='email'
               name='email'
               minLength="5"
-              maxLength="80"
+              maxLength="50"
               required
               value={values.email || ''}
+              pattern={CUSTOM_VALIDATION.email.pattern}
               onChange={handleChange}
             />
             <p className='authform__error'>{errors.email}</p>
@@ -82,6 +65,10 @@ function Login({onSubmit, apiError}) {
             <p className='authform__error'>{errors.password}</p>
           </label>
         </AuthForm>
+        <p className='authform__link-text'>
+          Ещё не зарегистрированы?
+          <Link className='authform__link' to='/signup'>Регистрация</Link>
+        </p>
       </div>
     </main>
   );

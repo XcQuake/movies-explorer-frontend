@@ -31,7 +31,34 @@ const POPUP_MESSAGES = {
   },
   savedMovies: {
     error: 'Во время загрузки сохранённых фильмов произошла ошибка. Подождите немного и попробуйте обновить страницу.'
+  },
+  profile: {
+    success: 'Данные аккаунта успешно изменены!',
   }
+};
+
+const CUSTOM_VALIDATION = {
+  username: {
+    pattern: '^[\\sa-zA-Zа-яА-ЯёЁ-]+$',
+    message: 'Имя может содержать только латиницу, кириллицу, пробел или дефис',
+  },
+  email: {
+    pattern: '^[-\\w.]+@([A-z0-9][-A-z0-9]+\\.)+[A-z]{2,4}$',
+    message: 'Некорректный Email-адрес',
+  },
+};
+
+const AUTHFORM_TEXTS = {
+  signIn: {
+    button: 'Войти',
+    linkText: 'Ещё не зарегистрированы?',
+    link: 'Регистрация',
+  },
+  signUp: {
+    button: 'Зарегистрироваться',
+    linkText: 'Уже зарегистрированы?',
+    link: 'Войти',
+  },
 }
 
 export {
@@ -41,4 +68,6 @@ export {
   SHORTMOVIES_DURATION,
   BREAKPOINTS,
   POPUP_MESSAGES,
+  CUSTOM_VALIDATION,
+  AUTHFORM_TEXTS,
 };

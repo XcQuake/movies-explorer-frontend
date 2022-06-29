@@ -1,51 +1,33 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback} from 'react';
+import { CUSTOM_VALIDATION } from '../utils/constants';
 
-export function useFormWithValidation({validations, initialValues, initialErrors}) {
+export function useFormWithValidation({initialValues} = {}) {
   const [values, setValues] = useState(initialValues || {});
-  const [errors, setErrors] = useState(initialErrors || {});
+  const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
-
-  const handleValidate = async (input) => {
-    const value = input.value;
-    const name = input.name;
-
-    if (validations) {
-      const newErrors = errors;
-      const validation = validations[name];
-      const pattern = validation?.pattern;
-      const minLength = validation?.minLength;
-
-      if (validation?.required?.value && !value) { // requirement check
-        setIsValid(false);
-        setErrors({...errors, [name]: validation?.required?.message});
-      } else if (pattern?.value && value && !RegExp(pattern.value).test(value)) { // pattern check
-        setIsValid(false);
-        setErrors({...errors, [name]: pattern.message});
-      } else if (minLength?.value && value && value.length < minLength.value) { // minLength check
-        setIsValid(false);
-        setErrors({...errors, [name]: minLength.message});
-      } else {
-        delete newErrors[name];
-        setErrors(newErrors);
-        return;
-      }
-    }
-  }
-
-  useEffect(() => {
-    if (Object.keys(errors).length === 0) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
-    }
-  }, [errors, values])
 
   const handleChange = (e) => {
     const target = e.target;
     const name = target.name;
     const value = target.value;
+
+    switch (name) {
+      case 'username':
+        target.validity.patternMismatch
+          ? target.setCustomValidity(CUSTOM_VALIDATION.username.message)
+          : target.setCustomValidity('')
+        break;
+      case 'email':
+        target.validity.patternMismatch
+          ? target.setCustomValidity(CUSTOM_VALIDATION.email.message)
+          : target.setCustomValidity('')
+        break;
+      default: target.setCustomValidity('')
+    }
+
     setValues({...values, [name]: value});
-    handleValidate(target);
+    setErrors({...errors, [name]: target.validationMessage });
+    setIsValid(target.closest("form").checkValidity());
   };
 
   const resetForm = useCallback(

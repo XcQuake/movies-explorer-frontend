@@ -126,16 +126,24 @@ export default function App() {
       <main className='main'>
         <Switch>
           <Route path='/signin'>
-            <Login
-              onSubmit={handleSignIn}
-              apiError={mainApiError}
-            />
+            {
+              !isLoggedIn
+              ? <Login
+                  onSubmit={handleSignIn}
+                  apiError={mainApiError}
+                />
+              : <Redirect to='/movies' />
+            }
           </Route>
           <Route path='/signup'>
-            <Register
-              onSubmit={handleSignUp}
-              apiError={mainApiError}
-            />
+            {
+              !isLoggedIn
+              ? <Register
+                  onSubmit={handleSignUp}
+                  apiError={mainApiError}
+                />
+              : <Redirect to='/movies' />
+            }
           </Route>
           <Route exact path='/'>
             <Main />

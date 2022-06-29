@@ -1,34 +1,18 @@
 import './Register.css';
+import { Link } from 'react-router-dom';
 import { useFormWithValidation } from '../../hooks/useFormWithValidation';
-import { validationConfig } from '../../utils/validationConfig';
 import Logo from '../Logo/Logo';
 import AuthForm from '../AuthForm/AuthForm';
+import { AUTHFORM_TEXTS, CUSTOM_VALIDATION } from '../../utils/constants';
 
 function Register({ onSubmit, apiError }) {
-  const initialValues = {
-    username: '',
-    email: '',
-    password: '',
-  };
-  const initialErrors = {
-    username: '',
-    email: '',
-    password: '',
-  };
-
   function handleSubmit(evt) {
     evt.preventDefault();
     onSubmit(
       values.username,
       values.email,
       values.password,
-    )
-  };
-
-  const textConfig = {
-    button: 'Зарегистрироваться',
-    linkText: 'Уже зарегистрированы?',
-    link: 'Войти',
+    );
   };
 
   const {
@@ -36,11 +20,7 @@ function Register({ onSubmit, apiError }) {
     handleChange,
     errors,
     isValid,
-  } = useFormWithValidation({
-    validations: validationConfig,
-    initialValues,
-    initialErrors,
-  });
+  } = useFormWithValidation({});
 
   return (
     <div className='register'>
@@ -53,7 +33,7 @@ function Register({ onSubmit, apiError }) {
           type={'register'}
           error={apiError}
           onSubmit={handleSubmit}
-          config={textConfig}
+          buttonText={'Зарегистрироваться'}
           isValid={isValid}
         >
           <label className='authform__field'>
@@ -67,6 +47,7 @@ function Register({ onSubmit, apiError }) {
               typeof=''
               required
               value={values.username || ''}
+              pattern={CUSTOM_VALIDATION.username.pattern}
               onChange={handleChange}
             />
             <span className='authform__input-error'>{errors.username}</span>
@@ -78,9 +59,10 @@ function Register({ onSubmit, apiError }) {
               type='email'
               name='email'
               minLength="5"
-              maxLength="80"
+              maxLength="50"
               required
               value={values.email || ''}
+              pattern={CUSTOM_VALIDATION.email.pattern}
               onChange={handleChange}
             />
             <span className='authform__input-error'>{errors.email}</span>
@@ -100,6 +82,10 @@ function Register({ onSubmit, apiError }) {
             <span className='authform__input-error'>{errors.password}</span>
           </label>
         </AuthForm>
+        <p className='authform__link-text'>
+          Уже зарегистрированы?
+          <Link className='authform__link' to='/signin'>Войти</Link>
+        </p>
       </div>
     </div>
   );
