@@ -32,7 +32,7 @@ export function transformMovies(movies) {
       nameRU: movie.nameRU || 'unknown',
       nameEN: movie.nameEN || 'unknown',
     };
-    changedMovies.push(newMovie)
+    return changedMovies.push(newMovie)
   })
 
   return changedMovies;

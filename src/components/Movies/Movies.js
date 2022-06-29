@@ -33,7 +33,9 @@ function Movies({onError}) {
 
   function getFilteredMovies(keyWord, isShortMovies) {
     return new Promise((resolve) => {
-      const filteredMovies = filterMovies(allMovies, keyWord, isShortMovies);
+      const filteredMovies = keyWord
+        ? filterMovies(allMovies, keyWord, isShortMovies)
+        : [];
       resolve(filteredMovies);
     })
   };
