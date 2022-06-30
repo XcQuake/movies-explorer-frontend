@@ -168,7 +168,7 @@ export default function App() {
                 <Movies onError={handleOpenPopup} />
               </Route>
               <Route path='/saved-movies'>
-                <SavedMovies />
+                <SavedMovies onError={handleOpenPopup} />
               </Route>
               <Route path='/profile'>
                 <Profile onSuccesChange={handleOpenPopup} onSignOut={handleSignOut}/>

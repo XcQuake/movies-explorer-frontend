@@ -82,7 +82,7 @@ function Movies({onError}) {
 
   return (
     <>
-      <SearchForm onSubmit={handleSearchSubmit}>
+      <SearchForm onSubmit={handleSearchSubmit} onError={onError}>
         <FilterCheckbox
           onChange={handleChangeCheckbox}
         />

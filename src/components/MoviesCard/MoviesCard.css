@@ -19,6 +19,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: 100%;
 }
 
 .movies-card__title {
@@ -26,6 +27,7 @@
   font-size: 12px;
   line-height: 15px;
   margin: 0;
+  max-width: 80%;
 }
 
 .movies-card__duration {
