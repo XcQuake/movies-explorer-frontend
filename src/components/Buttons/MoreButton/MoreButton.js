@@ -1,8 +1,8 @@
 import './MoreButton.css';
 
-function MoreButton() {
+function MoreButton({onClick}) {
   return (
-    <button className='more-button'>Ещё</button>
+    <button className='more-button' onClick={onClick}>Ещё</button>
   );
 }
 

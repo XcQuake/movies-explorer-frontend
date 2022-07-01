@@ -13,6 +13,10 @@
   row-gap: 65px;
 }
 
+.movies__not-found {
+  text-align: center;
+}
+
 @media (min-width: 768px) {
   .movies__wrapper {
     padding: 70px 30px 80px;

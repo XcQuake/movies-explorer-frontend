@@ -1,21 +1,25 @@
-import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useFormWithValidation } from '../../hooks/useFormWithValidation';
+import { CUSTOM_VALIDATION } from '../../utils/constants';
 import AuthForm from '../AuthForm/AuthForm';
 import Logo from '../Logo/Logo';
 import './Login.css';
 
-function Login() {
-  const [errorMessage, setErrorMessage] = useState('');
-
+function Login({onSubmit, apiError}) {
   function submitHandler(evt) {
     evt.preventDefault()
-    setErrorMessage('Что-то пошло не так...')
+    onSubmit(
+      values.email,
+      values.password,
+    );
   };
 
-  const textConfig = {
-    button: 'Войти',
-    linkText: 'Ещё не зарегистрированы?',
-    link: 'Регистрация',
-  };
+  const {
+    values,
+    handleChange,
+    errors,
+    isValid,
+  } = useFormWithValidation();
 
   return (
     <main className='login'>
@@ -26,9 +30,10 @@ function Login() {
         </div>
         <AuthForm
           type={'login'}
-          error={errorMessage}
+          error={apiError}
           onSubmit={submitHandler}
-          config={textConfig}
+          buttonText={'Войти'}
+          isValid={isValid}
         >
           <label className='authform__field'>
             E-mail
@@ -37,10 +42,13 @@ function Login() {
               type='email'
               name='email'
               minLength="5"
-              maxLength="80"
+              maxLength="50"
               required
+              value={values.email || ''}
+              pattern={CUSTOM_VALIDATION.email.pattern}
+              onChange={handleChange}
             />
-            <p className='authform__error'>{errorMessage}</p>
+            <p className='authform__error'>{errors.email}</p>
           </label>
           <label className='authform__field'>
             Пароль
@@ -48,13 +56,18 @@ function Login() {
               className='authform__input'
               type='password'
               name='password'
-              minLength="6"
               maxLength="30"
               required
+              value={values.password || ''}
+              onChange={handleChange}
             />
-            <p className='authform__error'>{errorMessage}</p>
+            <p className='authform__error'>{errors.password}</p>
           </label>
         </AuthForm>
+        <p className='authform__link-text'>
+          Ещё не зарегистрированы?
+          <Link className='authform__link' to='/signup'>Регистрация</Link>
+        </p>
       </div>
     </main>
   );

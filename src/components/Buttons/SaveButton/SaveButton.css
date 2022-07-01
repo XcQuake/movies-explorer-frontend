@@ -1,4 +1,4 @@
-.movie-button {
+.save-button {
   width: 72px;
   height: 21px;
   font-weight: 400;
@@ -22,39 +22,39 @@
   cursor: pointer;
 }
 
-.movie-button__text {
+.save-button__text {
   opacity: 1;
   transition: 0.2s ease;
 }
 
-.movie-button_saved {
+.save-button_saved {
   width: 21px;
   background-image: url(../../../images/saved-icon.svg);
   background-color: #FF3055;
   opacity: 1;
 }
 
-.movie-button_saved .movie-button__text {
+.save-button_saved .save-button__text {
   opacity: 0;
 }
 
-.movie-button:focus-visible {
+.save-button:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px #3456F3;
   opacity: 1;
 }
 
-.movies-card:hover .movie-button {
+.movies-card:hover .save-button {
   opacity: 1;
 }
 
-.movie-button_remove {
+.save-button_remove {
   width: 21px;
   background-image: url(../../../images/remove-icon.svg);
 }
 
 @media (max-width: 725px) {
-  .movie-button {
+  .save-button {
     opacity: 1;
   }
 }
